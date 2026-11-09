@@ -1,0 +1,370 @@
+[
+  {
+    "index": 0,
+    "transformed_feature": "numeric__income",
+    "original_feature": "income",
+    "kind": "numeric"
+  },
+  {
+    "index": 1,
+    "transformed_feature": "numeric__name_email_similarity",
+    "original_feature": "name_email_similarity",
+    "kind": "numeric"
+  },
+  {
+    "index": 2,
+    "transformed_feature": "numeric__prev_address_months_count",
+    "original_feature": "prev_address_months_count",
+    "kind": "numeric"
+  },
+  {
+    "index": 3,
+    "transformed_feature": "numeric__current_address_months_count",
+    "original_feature": "current_address_months_count",
+    "kind": "numeric"
+  },
+  {
+    "index": 4,
+    "transformed_feature": "numeric__customer_age",
+    "original_feature": "customer_age",
+    "kind": "numeric"
+  },
+  {
+    "index": 5,
+    "transformed_feature": "numeric__days_since_request",
+    "original_feature": "days_since_request",
+    "kind": "numeric"
+  },
+  {
+    "index": 6,
+    "transformed_feature": "numeric__intended_balcon_amount",
+    "original_feature": "intended_balcon_amount",
+    "kind": "numeric"
+  },
+  {
+    "index": 7,
+    "transformed_feature": "numeric__zip_count_4w",
+    "original_feature": "zip_count_4w",
+    "kind": "numeric"
+  },
+  {
+    "index": 8,
+    "transformed_feature": "numeric__velocity_6h",
+    "original_feature": "velocity_6h",
+    "kind": "numeric"
+  },
+  {
+    "index": 9,
+    "transformed_feature": "numeric__velocity_24h",
+    "original_feature": "velocity_24h",
+    "kind": "numeric"
+  },
+  {
+    "index": 10,
+    "transformed_feature": "numeric__velocity_4w",
+    "original_feature": "velocity_4w",
+    "kind": "numeric"
+  },
+  {
+    "index": 11,
+    "transformed_feature": "numeric__bank_branch_count_8w",
+    "original_feature": "bank_branch_count_8w",
+    "kind": "numeric"
+  },
+  {
+    "index": 12,
+    "transformed_feature": "numeric__date_of_birth_distinct_emails_4w",
+    "original_feature": "date_of_birth_distinct_emails_4w",
+    "kind": "numeric"
+  },
+  {
+    "index": 13,
+    "transformed_feature": "numeric__credit_risk_score",
+    "original_feature": "credit_risk_score",
+    "kind": "numeric"
+  },
+  {
+    "index": 14,
+    "transformed_feature": "numeric__bank_months_count",
+    "original_feature": "bank_months_count",
+    "kind": "numeric"
+  },
+  {
+    "index": 15,
+    "transformed_feature": "numeric__proposed_credit_limit",
+    "original_feature": "proposed_credit_limit",
+    "kind": "numeric"
+  },
+  {
+    "index": 16,
+    "transformed_feature": "numeric__session_length_in_minutes",
+    "original_feature": "session_length_in_minutes",
+    "kind": "numeric"
+  },
+  {
+    "index": 17,
+    "transformed_feature": "numeric__device_distinct_emails",
+    "original_feature": "device_distinct_emails",
+    "kind": "numeric"
+  },
+  {
+    "index": 18,
+    "transformed_feature": "numeric__device_fraud_count",
+    "original_feature": "device_fraud_count",
+    "kind": "numeric"
+  },
+  {
+    "index": 19,
+    "transformed_feature": "numeric_missing__missingindicator_prev_address_months_count",
+    "original_feature": "prev_address_months_count",
+    "kind": "missing_indicator"
+  },
+  {
+    "index": 20,
+    "transformed_feature": "numeric_missing__missingindicator_current_address_months_count",
+    "original_feature": "current_address_months_count",
+    "kind": "missing_indicator"
+  },
+  {
+    "index": 21,
+    "transformed_feature": "numeric_missing__missingindicator_intended_balcon_amount",
+    "original_feature": "intended_balcon_amount",
+    "kind": "missing_indicator"
+  },
+  {
+    "index": 22,
+    "transformed_feature": "numeric_missing__missingindicator_bank_months_count",
+    "original_feature": "bank_months_count",
+    "kind": "missing_indicator"
+  },
+  {
+    "index": 23,
+    "transformed_feature": "numeric_missing__missingindicator_session_length_in_minutes",
+    "original_feature": "session_length_in_minutes",
+    "kind": "missing_indicator"
+  },
+  {
+    "index": 24,
+    "transformed_feature": "numeric_missing__missingindicator_device_distinct_emails",
+    "original_feature": "device_distinct_emails",
+    "kind": "missing_indicator"
+  },
+  {
+    "index": 25,
+    "transformed_feature": "binary__email_is_free",
+    "original_feature": "email_is_free",
+    "kind": "binary"
+  },
+  {
+    "index": 26,
+    "transformed_feature": "binary__phone_home_valid",
+    "original_feature": "phone_home_valid",
+    "kind": "binary"
+  },
+  {
+    "index": 27,
+    "transformed_feature": "binary__phone_mobile_valid",
+    "original_feature": "phone_mobile_valid",
+    "kind": "binary"
+  },
+  {
+    "index": 28,
+    "transformed_feature": "binary__has_other_cards",
+    "original_feature": "has_other_cards",
+    "kind": "binary"
+  },
+  {
+    "index": 29,
+    "transformed_feature": "binary__foreign_request",
+    "original_feature": "foreign_request",
+    "kind": "binary"
+  },
+  {
+    "index": 30,
+    "transformed_feature": "binary__keep_alive_session",
+    "original_feature": "keep_alive_session",
+    "kind": "binary"
+  },
+  {
+    "index": 31,
+    "transformed_feature": "categorical__payment_type_AA",
+    "original_feature": "payment_type",
+    "kind": "one_hot",
+    "category": "AA"
+  },
+  {
+    "index": 32,
+    "transformed_feature": "categorical__payment_type_AB",
+    "original_feature": "payment_type",
+    "kind": "one_hot",
+    "category": "AB"
+  },
+  {
+    "index": 33,
+    "transformed_feature": "categorical__payment_type_AC",
+    "original_feature": "payment_type",
+    "kind": "one_hot",
+    "category": "AC"
+  },
+  {
+    "index": 34,
+    "transformed_feature": "categorical__payment_type_AD",
+    "original_feature": "payment_type",
+    "kind": "one_hot",
+    "category": "AD"
+  },
+  {
+    "index": 35,
+    "transformed_feature": "categorical__payment_type_AE",
+    "original_feature": "payment_type",
+    "kind": "one_hot",
+    "category": "AE"
+  },
+  {
+    "index": 36,
+    "transformed_feature": "categorical__employment_status_CA",
+    "original_feature": "employment_status",
+    "kind": "one_hot",
+    "category": "CA"
+  },
+  {
+    "index": 37,
+    "transformed_feature": "categorical__employment_status_CB",
+    "original_feature": "employment_status",
+    "kind": "one_hot",
+    "category": "CB"
+  },
+  {
+    "index": 38,
+    "transformed_feature": "categorical__employment_status_CC",
+    "original_feature": "employment_status",
+    "kind": "one_hot",
+    "category": "CC"
+  },
+  {
+    "index": 39,
+    "transformed_feature": "categorical__employment_status_CD",
+    "original_feature": "employment_status",
+    "kind": "one_hot",
+    "category": "CD"
+  },
+  {
+    "index": 40,
+    "transformed_feature": "categorical__employment_status_CE",
+    "original_feature": "employment_status",
+    "kind": "one_hot",
+    "category": "CE"
+  },
+  {
+    "index": 41,
+    "transformed_feature": "categorical__employment_status_CF",
+    "original_feature": "employment_status",
+    "kind": "one_hot",
+    "category": "CF"
+  },
+  {
+    "index": 42,
+    "transformed_feature": "categorical__employment_status_CG",
+    "original_feature": "employment_status",
+    "kind": "one_hot",
+    "category": "CG"
+  },
+  {
+    "index": 43,
+    "transformed_feature": "categorical__housing_status_BA",
+    "original_feature": "housing_status",
+    "kind": "one_hot",
+    "category": "BA"
+  },
+  {
+    "index": 44,
+    "transformed_feature": "categorical__housing_status_BB",
+    "original_feature": "housing_status",
+    "kind": "one_hot",
+    "category": "BB"
+  },
+  {
+    "index": 45,
+    "transformed_feature": "categorical__housing_status_BC",
+    "original_feature": "housing_status",
+    "kind": "one_hot",
+    "category": "BC"
+  },
+  {
+    "index": 46,
+    "transformed_feature": "categorical__housing_status_BD",
+    "original_feature": "housing_status",
+    "kind": "one_hot",
+    "category": "BD"
+  },
+  {
+    "index": 47,
+    "transformed_feature": "categorical__housing_status_BE",
+    "original_feature": "housing_status",
+    "kind": "one_hot",
+    "category": "BE"
+  },
+  {
+    "index": 48,
+    "transformed_feature": "categorical__housing_status_BF",
+    "original_feature": "housing_status",
+    "kind": "one_hot",
+    "category": "BF"
+  },
+  {
+    "index": 49,
+    "transformed_feature": "categorical__housing_status_BG",
+    "original_feature": "housing_status",
+    "kind": "one_hot",
+    "category": "BG"
+  },
+  {
+    "index": 50,
+    "transformed_feature": "categorical__source_INTERNET",
+    "original_feature": "source",
+    "kind": "one_hot",
+    "category": "INTERNET"
+  },
+  {
+    "index": 51,
+    "transformed_feature": "categorical__source_TELEAPP",
+    "original_feature": "source",
+    "kind": "one_hot",
+    "category": "TELEAPP"
+  },
+  {
+    "index": 52,
+    "transformed_feature": "categorical__device_os_linux",
+    "original_feature": "device_os",
+    "kind": "one_hot",
+    "category": "linux"
+  },
+  {
+    "index": 53,
+    "transformed_feature": "categorical__device_os_macintosh",
+    "original_feature": "device_os",
+    "kind": "one_hot",
+    "category": "macintosh"
+  },
+  {
+    "index": 54,
+    "transformed_feature": "categorical__device_os_other",
+    "original_feature": "device_os",
+    "kind": "one_hot",
+    "category": "other"
+  },
+  {
+    "index": 55,
+    "transformed_feature": "categorical__device_os_windows",
+    "original_feature": "device_os",
+    "kind": "one_hot",
+    "category": "windows"
+  },
+  {
+    "index": 56,
+    "transformed_feature": "categorical__device_os_x11",
+    "original_feature": "device_os",
+    "kind": "one_hot",
+    "category": "x11"
+  }
+]

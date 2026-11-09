@@ -1,0 +1,75 @@
+{
+  "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+  "source_rows": 1000000,
+  "source_columns": 32,
+  "source_nan": 0,
+  "source_inf": 0,
+  "source_column_aliases": {
+    "device_distinct_emails_8w": "device_distinct_emails"
+  },
+  "input_features_before_transform": 30,
+  "transformed_features": 57,
+  "feature_counts_by_kind": {
+    "numeric": 19,
+    "missing_indicator": 6,
+    "binary": 6,
+    "one_hot": 26
+  },
+  "new_missing_warning_count": 0,
+  "splits": {
+    "train": {
+      "shape": [
+        794989,
+        57
+      ],
+      "fraud_count": 8151,
+      "nan": 0,
+      "inf": 0,
+      "non_binary_values": 0,
+      "indicator_counts": {
+        "prev_address_months_count": 568423,
+        "current_address_months_count": 3027,
+        "intended_balcon_amount": 585908,
+        "bank_months_count": 199549,
+        "session_length_in_minutes": 1513,
+        "device_distinct_emails": 309
+      }
+    },
+    "validation": {
+      "shape": [
+        108168,
+        57
+      ],
+      "fraud_count": 1450,
+      "nan": 0,
+      "inf": 0,
+      "non_binary_values": 0,
+      "indicator_counts": {
+        "prev_address_months_count": 81293,
+        "current_address_months_count": 392,
+        "intended_balcon_amount": 77648,
+        "bank_months_count": 26451,
+        "session_length_in_minutes": 303,
+        "device_distinct_emails": 36
+      }
+    },
+    "test": {
+      "shape": [
+        96843,
+        57
+      ],
+      "fraud_count": 1428,
+      "nan": 0,
+      "inf": 0,
+      "non_binary_values": 0,
+      "indicator_counts": {
+        "prev_address_months_count": 63204,
+        "current_address_months_count": 835,
+        "intended_balcon_amount": 78967,
+        "bank_months_count": 27635,
+        "session_length_in_minutes": 199,
+        "device_distinct_emails": 14
+      }
+    }
+  }
+}

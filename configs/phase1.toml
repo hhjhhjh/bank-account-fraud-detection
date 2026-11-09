@@ -1,0 +1,17 @@
+[data]
+path = "data/raw/Base.csv"
+chunksize = 100000
+seed = 42
+
+[output]
+processed_dir = "data/processed/full"
+report_dir = "results/phase1/full"
+
+[runtime]
+device = "auto"
+
+# Phase 2에서 사용할 설정 자리이며 Phase 1은 학습하지 않습니다.
+[training]
+checkpoint_dir = "checkpoints"
+# batch_size는 서버 사양 확인 후 Phase 2에서 정합니다.
+mixed_precision = "off"
