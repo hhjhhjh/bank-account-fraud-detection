@@ -163,7 +163,7 @@ def load_config(path: Path) -> dict:
         config = tomllib.load(handle)
     # Paths are relative to the project root (the parent of configs/), never cwd.
     root = path.resolve().parent.parent
-    for section, key in [("data", "path"), ("output", "processed_dir"), ("output", "report_dir"), ("training", "checkpoint_dir")]:
+    for section, key in [("data", "path"), ("data", "processed_dir"), ("output", "processed_dir"), ("output", "report_dir"), ("training", "checkpoint_dir")]:
         if section in config and key in config[section]:
             value = Path(config[section][key]).expanduser()
             config[section][key] = str(value if value.is_absolute() else root / value)

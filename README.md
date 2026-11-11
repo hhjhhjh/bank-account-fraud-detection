@@ -162,13 +162,24 @@ python -c 'import torch; print(torch.__version__); print(torch.cuda.is_available
 df -h .
 ```
 
-서버 사양과 정책을 확인하기 전에는 전체 데이터 학습을 실행하지 않습니다. batch size는 GPU 메모리와 Baseline 동작을 확인한 뒤 설정합니다. `configs/phase1.toml`의 `training` 절은 이후 학습 설정을 둘 위치이며, Phase 1은 그 값을 사용해 학습하지 않습니다.
+서버 사양과 정책을 확인한 뒤 전체 데이터 학습과 GPU 메모리에 맞는 batch size를 정합니다. CUDA 혼합 정밀도는 환경 확인 뒤 `configs/b0.toml`의 `mixed_precision`을 `fp16`으로 설정해 사용합니다.
 
-CUDA 혼합 정밀도 지원은 환경 보고에 기록하고, 선택적 혼합 정밀도·체크포인트 복구·학습 시간 기록은 학습 코드를 작성할 때 구현합니다. 장시간 실행에는 학교에서 허용한 세션 관리 방법을 사용하며, 허용된다면 `tmux`를 이용할 수 있습니다.
+## B0 학습
+
+PyTorch 환경에서 `baf-data`로 만든 Train·Validation 배열을 사용합니다. `configs/b0.toml`에서 모델, 시드, 학습 설정과 체크포인트 위치를 관리합니다. 로컬에서는 `--smoke`로 각 분할의 클래스 비율에 맞춰 작은 표본을 추출할 수 있습니다.
+
+```bash
+python -m pip install '.[torch]'
+baf-train --run-name local-first --smoke --batch-size 256 --epochs 2
+baf-train --run-name local-resumed --smoke --batch-size 256 --epochs 3 \
+  --resume checkpoints/b0/local-first/last.pt
+```
+
+`--epochs`는 재개 전 학습을 포함한 총 epoch 수입니다. 재개 명령에는 새 실행 이름과 같은 데이터·학습 설정을 사용합니다. `metrics.json`에 epoch별 손실·Validation AP·장치·시간을 기록합니다. `best.pt`는 Validation AP가 가장 높았던 모델을, `last.pt`는 마지막 epoch의 모델과 복구에 필요한 학습 상태를 저장합니다.
 
 ## 연구 순서
 
-Phase 1의 데이터 검증 결과를 검토한 뒤 Baseline을 구현합니다. 먼저 단일 시드로 동작을 확인하고 주요 실험은 최소 세 시드로 반복합니다.
+먼저 단일 시드로 학습 동작을 확인하고 주요 실험은 최소 세 시드로 반복합니다.
 
 | 실험 | 모델 | 학습 방법 | 범위 |
 |---|---|---|---|
@@ -179,7 +190,7 @@ Phase 1의 데이터 검증 결과를 검토한 뒤 Baseline을 구현합니다.
 | E4 | MLP | BCE와 Train 전용 Random Oversampling | 시간과 자원이 허용되면 추가합니다. |
 | E5 | FT-Transformer | 선정한 손실함수 | 시간과 자원이 허용되면 추가합니다. |
 
-이 표는 이후 실험의 계획이며 학습 구현이나 성능 결과를 뜻하지 않습니다. MLP와 Residual MLP의 구조 효과는 같은 손실함수·분할·시드·튜닝 예산에서 비교합니다. Validation AP를 우선적인 체크포인트 선정 기준으로 검토하고 Early Stopping을 적용합니다. AP는 불균형 데이터에서 Precision과 Recall의 관계를 요약하는 Average Precision입니다.
+MLP와 Residual MLP의 구조 효과는 같은 손실함수·분할·시드·튜닝 예산에서 비교합니다. Validation AP를 기준으로 체크포인트를 선정하고, 설정한 epoch 동안 개선이 없으면 Early Stopping을 적용합니다. AP는 불균형 데이터에서 Precision과 Recall의 관계를 요약하는 Average Precision입니다.
 
 FPR은 정상 신청 중 사기로 잘못 판정한 비율입니다. 평가에서는 Validation에서 FPR 1% 이하의 임계값을 정하고 Test에 고정 적용합니다. Test의 실제 FPR과 Recall을 함께 보고하며 AP·Precision·Recall·F1·ROC-AUC·혼동행렬·PR 곡선·월별 성능과 학습 시간을 비교합니다.
 
