@@ -182,3 +182,43 @@ def test_cli_records_seed_override_in_metrics_and_checkpoint(b0_config, tmp_path
     metrics = json.loads((run_dir / "metrics.json").read_text())
     checkpoint = torch.load(run_dir / "last.pt", weights_only=True)
     assert metrics["signature"]["seed"] == checkpoint["signature"]["seed"] == 43
+
+
+def test_e3_config_matches_e1_training_conditions():
+    configs = Path(__file__).resolve().parents[1] / "configs"
+    e1 = train.load_config(configs / "e1.toml")
+    e3 = train.load_config(configs / "e3.toml")
+    assert {k: v for k, v in e3["training"].items() if k != "checkpoint_dir"} == {
+        k: v for k, v in e1["training"].items() if k != "checkpoint_dir"
+    }
+    assert e3["data"] == e1["data"]
+    assert e3["runtime"] == e1["runtime"]
+    assert e3["smoke"] == e1["smoke"]
+    assert e3["model"]["dropout"] == e1["model"]["dropout"]
+
+
+def test_residual_mlp_uses_weighted_bce_and_resumes(b0_config, tmp_path):
+    e1_config = {**b0_config, "training": {**b0_config["training"], "loss": "weighted_bce", "epochs": 1}}
+    e3_config = {
+        **e1_config,
+        "model": {"architecture": "residual_mlp", "width": 8, "num_blocks": 1, "dropout": 0.1},
+        "training": e1_config["training"].copy(),
+    }
+    e1 = train.train_mlp(e1_config, tmp_path / "e1")
+    e3 = train.train_mlp(e3_config, tmp_path / "e3")
+    signature = e3["signature"]
+    assert signature["experiment"] == "E3"
+    assert signature["architecture"] == "residual_mlp"
+    assert signature["loss"] == e1["signature"]["loss"]
+    assert signature["pos_weight"] == e1["signature"]["pos_weight"]
+    assert e3["trainable_parameters"] > 0
+
+    checkpoint = tmp_path / "e3" / "last.pt"
+    e3_config["training"]["epochs"] = 2
+    resumed = train.train_mlp(e3_config, tmp_path / "resumed", resume=checkpoint)
+    assert resumed["signature"] == signature
+    assert [row["epoch"] for row in resumed["history"]] == [1, 2]
+
+    e1_config["training"]["epochs"] = 2
+    with pytest.raises(ValueError, match="configuration or data"):
+        train.train_mlp(e1_config, tmp_path / "wrong-architecture", resume=checkpoint)
