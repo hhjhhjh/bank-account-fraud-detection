@@ -1,0 +1,26 @@
+[data]
+processed_dir = "data/processed/full"
+
+[model]
+architecture = "residual_mlp"
+width = 75
+num_blocks = 1
+dropout = 0.1
+
+[runtime]
+device = "auto"
+
+[training]
+loss = "weighted_bce"
+seed = 42
+epochs = 20
+learning_rate = 0.001
+weight_decay = 0.0001
+patience = 5
+mixed_precision = "off"
+checkpoint_dir = "checkpoints/e3"
+# Set batch_size here or pass --batch-size after choosing a device.
+
+[smoke]
+train_rows = 20000
+validation_rows = 10000
