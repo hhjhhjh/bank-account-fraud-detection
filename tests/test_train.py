@@ -6,6 +6,7 @@ import pytest
 
 torch = pytest.importorskip("torch")
 
+from baf import train
 from baf.train import train_b0
 
 
@@ -82,3 +83,102 @@ def test_mismatched_validation_width_fails_before_training(b0_config, tmp_path):
     with pytest.raises(ValueError, match="validation_X.npy"):
         train_b0(b0_config, run_dir)
     assert not run_dir.exists()
+
+
+def test_weighted_bce_uses_only_selected_train_labels(b0_config, tmp_path, monkeypatch):
+    data = Path(b0_config["data"]["processed_dir"])
+    np.save(data / "train_y.npy", (np.arange(60) < 17).astype(np.int64))
+    np.save(data / "validation_y.npy", (np.arange(30) < 20).astype(np.int64))
+    b0_config["training"].update(loss="weighted_bce", epochs=1)
+
+    train_epoch = train.train_epoch
+    validate_epoch = train.validate_epoch
+
+    def check_train(model, batches, loss_fn, optimizer, scaler):
+        assert loss_fn.pos_weight.item() == pytest.approx(29 / 11)
+        return train_epoch(model, batches, loss_fn, optimizer, scaler)
+
+    def check_validation(model, batches, loss_fn):
+        assert loss_fn.pos_weight is None
+        return validate_epoch(model, batches, loss_fn)
+
+    monkeypatch.setattr(train, "train_epoch", check_train)
+    monkeypatch.setattr(train, "validate_epoch", check_validation)
+    run_dir = tmp_path / "weighted"
+    result = train.train_mlp(b0_config, run_dir, smoke=True)
+
+    assert result["splits"]["train"] == {"rows": 40, "fraud_count": 11}
+    assert result["signature"]["experiment"] == "E1"
+    assert result["signature"]["pos_weight"] == pytest.approx(29 / 11)
+    checkpoint = torch.load(run_dir / "last.pt", weights_only=True)
+    assert checkpoint["signature"] == result["signature"]
+
+
+def test_weighted_bce_resume_rejects_switch_to_unweighted_bce(b0_config, tmp_path):
+    b0_config["training"].update(loss="weighted_bce", epochs=1)
+    run_dir = tmp_path / "weighted"
+    train.train_mlp(b0_config, run_dir)
+
+    b0_config["training"]["epochs"] = 2
+    resumed = train.train_mlp(b0_config, tmp_path / "resumed", resume=run_dir / "last.pt")
+    assert [row["epoch"] for row in resumed["history"]] == [1, 2]
+
+    b0_config["training"]["loss"] = "bce"
+    with pytest.raises(ValueError, match="configuration or data"):
+        train.train_mlp(b0_config, tmp_path / "unweighted", resume=run_dir / "last.pt")
+
+
+def test_focal_gamma_is_saved_and_checked_on_resume(b0_config, tmp_path):
+    b0_config["training"].update(loss="focal", focal_gamma=2.0, epochs=1)
+    run_dir = tmp_path / "focal"
+    result = train.train_mlp(b0_config, run_dir)
+    checkpoint = torch.load(run_dir / "last.pt", weights_only=True)
+    assert checkpoint["signature"] == result["signature"]
+    assert result["signature"]["experiment"] == "E2"
+    assert result["signature"]["loss"] == "BinaryFocalLoss"
+    assert result["signature"]["focal_gamma"] == 2.0
+
+    b0_config["training"]["epochs"] = 2
+    resumed = train.train_mlp(b0_config, tmp_path / "resumed", resume=run_dir / "last.pt")
+    assert [row["epoch"] for row in resumed["history"]] == [1, 2]
+
+    b0_config["training"]["focal_gamma"] = 1.0
+    with pytest.raises(ValueError, match="configuration or data"):
+        train.train_mlp(b0_config, tmp_path / "different-gamma", resume=run_dir / "last.pt")
+
+
+def test_cli_overrides_focal_gamma_in_saved_metrics(b0_config, tmp_path, monkeypatch):
+    b0_config["training"].update(loss="focal", focal_gamma=2.0, epochs=1, checkpoint_dir=str(tmp_path))
+    monkeypatch.setattr(train, "load_config", lambda path: b0_config)
+    monkeypatch.setattr("sys.argv", ["baf-train", "--run-name", "gamma-check", "--focal-gamma", "3.5"])
+
+    train.main()
+
+    metrics = json.loads((tmp_path / "gamma-check" / "metrics.json").read_text())
+    assert metrics["signature"]["focal_gamma"] == 3.5
+
+
+def test_cli_rejects_focal_gamma_for_bce(b0_config, tmp_path, monkeypatch, capsys):
+    b0_config["training"]["checkpoint_dir"] = str(tmp_path)
+    monkeypatch.setattr(train, "load_config", lambda path: b0_config)
+    monkeypatch.setattr("sys.argv", ["baf-train", "--run-name", "bce-check", "--focal-gamma", "3.5"])
+
+    with pytest.raises(SystemExit) as error:
+        train.main()
+
+    assert error.value.code == 2
+    assert "--focal-gamma requires a focal loss configuration" in capsys.readouterr().err
+    assert not (tmp_path / "bce-check").exists()
+
+
+def test_cli_records_seed_override_in_metrics_and_checkpoint(b0_config, tmp_path, monkeypatch):
+    b0_config["training"].update(epochs=1, checkpoint_dir=str(tmp_path))
+    monkeypatch.setattr(train, "load_config", lambda path: b0_config)
+    monkeypatch.setattr("sys.argv", ["baf-train", "--run-name", "seed-check", "--seed", "43"])
+
+    train.main()
+
+    run_dir = tmp_path / "seed-check"
+    metrics = json.loads((run_dir / "metrics.json").read_text())
+    checkpoint = torch.load(run_dir / "last.pt", weights_only=True)
+    assert metrics["signature"]["seed"] == checkpoint["signature"]["seed"] == 43
