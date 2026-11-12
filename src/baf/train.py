@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split
 
 from baf.cli import load_config, sha256_file, write_json
 from baf.losses import BinaryFocalLoss
-from baf.models import BaselineMLP
+from baf.models import BaselineMLP, ResidualMLP
 from baf.runtime import resolve_device
 from baf.schema import TARGET, TIME
 
@@ -129,9 +129,21 @@ def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path 
             raise ValueError(f"{name} must be a positive integer")
     if type(seed) is not int or not 0 <= seed < 2**32:
         raise ValueError("seed must be an integer from 0 through 2**32 - 1")
-    hidden_dims = model_config["hidden_dims"]
-    if not hidden_dims or any(type(width) is not int or width < 1 for width in hidden_dims):
-        raise ValueError("hidden_dims must contain positive integers")
+    architecture = model_config.get("architecture", "mlp")
+    if architecture == "mlp":
+        hidden_dims = model_config["hidden_dims"]
+        if not hidden_dims or any(type(width) is not int or width < 1 for width in hidden_dims):
+            raise ValueError("hidden_dims must contain positive integers")
+        model_class = BaselineMLP
+        architecture_args = {"hidden_dims": hidden_dims}
+    elif architecture == "residual_mlp":
+        model_class = ResidualMLP
+        architecture_args = {name: model_config[name] for name in ("width", "num_blocks")}
+        for name, value in architecture_args.items():
+            if type(value) is not int or value < 1:
+                raise ValueError(f"model.{name} must be a positive integer")
+    else:
+        raise ValueError("model.architecture must be mlp or residual_mlp")
     dropout = model_config["dropout"]
     if not 0 <= dropout < 1:
         raise ValueError("dropout must be in [0, 1)")
@@ -154,7 +166,7 @@ def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path 
             raise ValueError(f"{split}_rows must be an integer of at least 2")
         selections[split] = select_rows(labels, limit, seed)
 
-    model_args = {"input_dim": arrays["train"][0].shape[1], "hidden_dims": hidden_dims, "dropout": dropout}
+    model_args = {"input_dim": arrays["train"][0].shape[1], "dropout": dropout, **architecture_args}
     signature = {
         "experiment": "B0", "model": model_args, "loss": "BCEWithLogitsLoss", "optimizer": "AdamW",
         "seed": seed, "batch_size": batch_size, "learning_rate": lr, "weight_decay": weight_decay,
@@ -163,7 +175,7 @@ def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path 
         "data": fingerprints,
     }
     torch.manual_seed(seed)
-    model = BaselineMLP(**model_args).to(device)
+    model = model_class(**model_args).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
     scaler = torch.amp.GradScaler("cuda", enabled=precision == "fp16")
     validation_loss_fn = torch.nn.BCEWithLogitsLoss()
@@ -179,6 +191,8 @@ def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path 
     elif loss_name == "focal":
         training_loss_fn = BinaryFocalLoss(gamma=training["focal_gamma"])
         signature.update(experiment="E2", loss="BinaryFocalLoss", focal_gamma=training_loss_fn.gamma)
+    if architecture == "residual_mlp":
+        signature.update(experiment="E3", architecture=architecture)
 
     history, best, stale_epochs = [], None, 0
     if resume is not None:
@@ -238,6 +252,7 @@ def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path 
         "resumed_from": str(resume) if resume is not None else None,
         "best_epoch": best["epoch"], "best_validation_ap": best["validation_ap"],
         "total_epoch_seconds": sum(row["seconds"] for row in history),
+        "trainable_parameters": sum(parameter.numel() for parameter in model.parameters() if parameter.requires_grad),
         "splits": {
             split: {"rows": len(rows), "fraud_count": int(arrays[split][1][rows].sum())}
             for split, rows in selections.items()
