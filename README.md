@@ -164,7 +164,7 @@ df -h .
 
 서버 사양과 정책을 확인한 뒤 전체 데이터 학습과 GPU 메모리에 맞는 batch size를 정합니다. CUDA 혼합 정밀도는 환경 확인 뒤 `configs/b0.toml`의 `mixed_precision`을 `fp16`으로 설정해 사용합니다.
 
-## B0 학습
+## MLP 학습
 
 PyTorch 환경에서 `baf-data`로 만든 Train·Validation 배열을 사용합니다. `configs/b0.toml`에서 모델, 시드, 학습 설정과 체크포인트 위치를 관리합니다. 로컬에서는 `--smoke`로 각 분할의 클래스 비율에 맞춰 작은 표본을 추출할 수 있습니다.
 
@@ -176,6 +176,24 @@ baf-train --run-name local-resumed --smoke --batch-size 256 --epochs 3 \
 ```
 
 `--epochs`는 재개 전 학습을 포함한 총 epoch 수입니다. 재개 명령에는 새 실행 이름과 같은 데이터·학습 설정을 사용합니다. `metrics.json`에 epoch별 손실·Validation AP·장치·시간을 기록합니다. `best.pt`는 Validation AP가 가장 높았던 모델을, `last.pt`는 마지막 epoch의 모델과 복구에 필요한 학습 상태를 저장합니다.
+
+E1은 B0와 같은 MLP에 Weighted BCE를 적용합니다. 실제 학습에 쓰는 Train 행에서 정상 건수를 사기 건수로 나눠 `pos_weight`를 계산하고 `metrics.json`에 기록합니다. E2는 고정된 클래스 가중치 없이 Focal Loss를 적용합니다. `configs/e2.toml`의 `focal_gamma`는 모델이 쉽게 맞히는 사례의 손실을 얼마나 줄일지 정합니다. [Focal Loss 논문](https://arxiv.org/abs/1708.02002)
+
+세 실험은 Validation 손실을 가중치 없는 BCE로 계산하며, 체크포인트는 Validation AP로 선택합니다. CUDA에서 B0를 배치 크기 256으로 학습했다면, 같은 장치와 배치 크기로 E1과 E2를 실행합니다.
+
+```bash
+baf-train --config configs/e1.toml --device cuda --batch-size 256 --run-name school-e1-seed42
+baf-train --config configs/e2.toml --device cuda --batch-size 256 --run-name school-e2-seed42
+```
+
+E2에서 감마의 영향을 확인하려면 `--focal-gamma`를 사용합니다. 여러 시드로 반복할 때는 `--seed`에 시드를 지정합니다. 실행 이름에 감마와 시드를 넣으면 결과 폴더를 찾기 쉽고, 실제 적용된 값은 `metrics.json`에서 확인할 수 있습니다.
+
+```bash
+baf-train --config configs/e2.toml --device cuda --batch-size 256 \
+  --focal-gamma 0.5 --seed 43 --run-name school-e2-gamma0.5-seed43
+```
+
+[MLP 손실함수 비교 기록](results/reference/mlp-loss-comparison/report.md)에서 학교 GPU의 세 시드 결과, 감마 탐색, 로컬 검증 기록을 확인할 수 있습니다.
 
 ## 연구 순서
 
