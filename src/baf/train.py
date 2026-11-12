@@ -13,6 +13,7 @@ from sklearn.metrics import average_precision_score
 from sklearn.model_selection import train_test_split
 
 from baf.cli import load_config, sha256_file, write_json
+from baf.losses import BinaryFocalLoss
 from baf.models import BaselineMLP
 from baf.runtime import resolve_device
 from baf.schema import TARGET, TIME
@@ -115,9 +116,12 @@ def save_checkpoint(path: Path, payload: dict) -> None:
             temporary.unlink(missing_ok=True)
 
 
-def train_b0(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path | None = None) -> dict:
+def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path | None = None) -> dict:
     training = config["training"]
     model_config = config["model"]
+    loss_name = training.get("loss", "bce")
+    if loss_name not in ("bce", "weighted_bce", "focal"):
+        raise ValueError("training.loss must be bce, weighted_bce or focal")
     batch_size = training.get("batch_size")
     epochs, patience, seed = (training[name] for name in ("epochs", "patience", "seed"))
     for name, value in [("batch_size", batch_size), ("epochs", epochs), ("patience", patience)]:
@@ -162,13 +166,25 @@ def train_b0(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path |
     model = BaselineMLP(**model_args).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
     scaler = torch.amp.GradScaler("cuda", enabled=precision == "fp16")
-    loss_fn = torch.nn.BCEWithLogitsLoss()
+    validation_loss_fn = torch.nn.BCEWithLogitsLoss()
+    training_loss_fn = validation_loss_fn
+    if loss_name == "weighted_bce":
+        train_rows = selections["train"]
+        fraud_count = int(arrays["train"][1][train_rows].sum())
+        pos_weight = (len(train_rows) - fraud_count) / fraud_count
+        training_loss_fn = torch.nn.BCEWithLogitsLoss(
+            pos_weight=torch.tensor([pos_weight], dtype=torch.float32, device=device)
+        )
+        signature.update(experiment="E1", pos_weight=pos_weight)
+    elif loss_name == "focal":
+        training_loss_fn = BinaryFocalLoss(gamma=training["focal_gamma"])
+        signature.update(experiment="E2", loss="BinaryFocalLoss", focal_gamma=training_loss_fn.gamma)
 
     history, best, stale_epochs = [], None, 0
     if resume is not None:
         state = torch.load(resume, map_location="cpu", weights_only=True)
         if state.get("format_version") != 1 or "optimizer_state" not in state:
-            raise ValueError("Resume requires a B0 last.pt training checkpoint")
+            raise ValueError("Resume requires a last.pt training checkpoint")
         if state["signature"] != signature:
             raise ValueError("Checkpoint training configuration or data differs from this run")
         history, best, stale_epochs = state["history"], state["best"], state["stale_epochs"]
@@ -187,8 +203,11 @@ def train_b0(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path |
         # Derive shuffle and dropout seeds from the epoch so resume needs no RNG snapshot.
         torch.manual_seed(seed + epoch)
         order = np.random.default_rng(seed + epoch).permutation(selections["train"])
-        train_loss = train_epoch(model, batches(arrays["train"], order, batch_size, device), loss_fn, optimizer, scaler)
-        val_loss, val_ap = validate_epoch(model, batches(arrays["validation"], selections["validation"], batch_size, device), loss_fn)
+        train_loss = train_epoch(
+            model, batches(arrays["train"], order, batch_size, device), training_loss_fn, optimizer, scaler
+        )
+        validation_batches = batches(arrays["validation"], selections["validation"], batch_size, device)
+        val_loss, val_ap = validate_epoch(model, validation_batches, validation_loss_fn)
         history.append({
             "epoch": epoch, "train_loss": train_loss, "validation_loss": val_loss,
             "validation_ap": val_ap, "seconds": time.perf_counter() - started, "device": device,
@@ -229,12 +248,18 @@ def train_b0(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path |
     return result
 
 
+# Preserve the Phase 2 entry point for Python callers.
+train_b0 = train_mlp
+
+
 def main():
-    parser = argparse.ArgumentParser(description="Train the B0 MLP on prepared BAF Train and Validation arrays")
+    parser = argparse.ArgumentParser(description="Train an MLP on prepared BAF Train and Validation arrays")
     parser.add_argument("--config", type=Path, default=Path("configs/b0.toml"))
     parser.add_argument("--run-name", required=True)
     parser.add_argument("--batch-size", type=int)
+    parser.add_argument("--seed", type=int, help="Override the experiment seed")
     parser.add_argument("--epochs", type=int, help="Total epoch limit, including completed epochs when resuming")
+    parser.add_argument("--focal-gamma", type=float, help="Override gamma for a focal loss configuration")
     parser.add_argument("--device", choices=("auto", "cpu", "mps", "cuda"))
     parser.add_argument("--smoke", action="store_true")
     parser.add_argument("--resume", type=Path, help="Resume a last.pt checkpoint into a new run directory")
@@ -245,15 +270,22 @@ def main():
         config = load_config(args.config)
         if args.batch_size is not None:
             config["training"]["batch_size"] = args.batch_size
+        if args.seed is not None:
+            config["training"]["seed"] = args.seed
         if args.epochs is not None:
             config["training"]["epochs"] = args.epochs
+        if args.focal_gamma is not None:
+            if config["training"].get("loss") != "focal":
+                raise ValueError("--focal-gamma requires a focal loss configuration")
+            config["training"]["focal_gamma"] = args.focal_gamma
         if args.device is not None:
             config["runtime"]["device"] = args.device
         run_dir = Path(config["training"]["checkpoint_dir"]) / args.run_name
-        result = train_b0(config, run_dir, smoke=args.smoke, resume=args.resume)
+        result = train_mlp(config, run_dir, smoke=args.smoke, resume=args.resume)
     except (OSError, ValueError, KeyError) as error:
         parser.exit(2, f"error: {error}\n")
-    print(f"Saved B0 metrics and checkpoints to {run_dir}. Best validation AP: {result['best_validation_ap']:.6f}")
+    experiment = result["signature"]["experiment"]
+    print(f"Saved {experiment} metrics and checkpoints to {run_dir}. Best validation AP: {result['best_validation_ap']:.6f}")
 
 
 if __name__ == "__main__":
