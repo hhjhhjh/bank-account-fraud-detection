@@ -195,6 +195,15 @@ baf-train --config configs/e2.toml --device cuda --batch-size 256 \
 
 [MLP 손실함수 비교 기록](results/reference/mlp-loss-comparison/report.md)에서 학교 GPU의 세 시드 결과, 감마 탐색, 로컬 검증 기록을 확인할 수 있습니다.
 
+E3는 너비 75의 Residual MLP에 Weighted BCE를 적용합니다. Residual 블록은 입력을 두 선형층으로 변환한 결과에 원래 입력을 더합니다. E1의 MLP와 파라미터 수를 비슷하게 맞췄으며, 실제 개수는 `metrics.json`의 `trainable_parameters`에 기록합니다. E1과 같은 시드 및 배치 크기로 반복합니다.
+
+```bash
+baf-train --config configs/e3.toml --device cuda --batch-size 256 \
+  --seed 42 --run-name school-e3-seed42
+```
+
+[MLP 구조 비교 기록](results/reference/mlp-architecture-comparison/report.md)에서 E1·E3의 세 시드 Validation AP, 파라미터 수, 학교 GPU 학습 시간을 확인할 수 있습니다.
+
 ## 연구 순서
 
 먼저 단일 시드로 학습 동작을 확인하고 주요 실험은 최소 세 시드로 반복합니다.
