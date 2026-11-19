@@ -206,6 +206,8 @@ baf-train --config configs/e3.toml --device cuda --batch-size 256 \
 
 ## 연구 순서
 
+현재까지의 진행 상황과 후속 평가·XAI 계획은 [프로젝트 진행 기록](docs/project-status.md)에 정리했습니다.
+
 먼저 단일 시드로 학습 동작을 확인하고 주요 실험은 최소 세 시드로 반복합니다.
 
 | 실험 | 모델 | 학습 방법 | 범위 |
@@ -214,14 +216,29 @@ baf-train --config configs/e3.toml --device cuda --batch-size 256 \
 | E1 | MLP | Weighted BCE | 필수 실험으로 진행합니다. |
 | E2 | MLP | Focal Loss | 필수 실험으로 진행합니다. |
 | E3 | Residual MLP | Validation에서 선정한 손실함수 | 필수 실험으로 진행합니다. |
-| E4 | MLP | BCE와 Train 전용 Random Oversampling | 시간과 자원이 허용되면 추가합니다. |
-| E5 | FT-Transformer | 선정한 손실함수 | 시간과 자원이 허용되면 추가합니다. |
+| E4 | MLP | BCE와 Train 전용 Random Oversampling | 중간발표 이후 기말까지 수행할 계획입니다. |
+| E5 | FT-Transformer | 선정한 손실함수 | E4 이후 기말까지 수행할 계획입니다. |
 
 MLP와 Residual MLP의 구조 효과는 같은 손실함수·분할·시드·튜닝 예산에서 비교합니다. Validation AP를 기준으로 체크포인트를 선정하고, 설정한 epoch 동안 개선이 없으면 Early Stopping을 적용합니다. AP는 불균형 데이터에서 Precision과 Recall의 관계를 요약하는 Average Precision입니다.
 
-FPR은 정상 신청 중 사기로 잘못 판정한 비율입니다. 평가에서는 Validation에서 FPR 1% 이하의 임계값을 정하고 Test에 고정 적용합니다. Test의 실제 FPR과 Recall을 함께 보고하며 AP·Precision·Recall·F1·ROC-AUC·혼동행렬·PR 곡선·월별 성능과 학습 시간을 비교합니다.
+FPR은 정상 신청 중 사기로 잘못 판정한 비율입니다. AP를 모델 선정 기준으로 사용하며, Validation에서 FPR 5%와 1% 이하를 각각 만족하는 임계값을 정해 Test에 고정 적용합니다. Test의 실제 FPR과 Recall을 함께 보고하며 AP·Precision·Recall·F1·ROC-AUC·혼동행렬·PR 곡선·월별 성능과 학습 시간을 비교합니다.
 
 학습이 안정화되면 선정 모델에 Captum Integrated Gradients를 적용합니다. logit 또는 확률 중 설명 대상을 명시하고 baseline을 기록하며, 범주형 기여도를 원래 특성으로 합칩니다. 전체 중요도와 TP·TN·FP·FN 사례를 분석하고 인과적 원인으로 해석하지 않습니다. SHAP은 필요할 때 추가합니다.
+
+## 중간발표 분석
+
+[Validation 분석 보고서](results/midterm/report.md)와 [8분 발표 구성](results/midterm/presentation-notes.md)에 B0~E3의 FPR 1%·5% 평가와 E1의 Integrated Gradients 결과를 정리했습니다. PNG·SVG 그림은 [발표용 그림](results/midterm/figures/)에서 확인할 수 있습니다.
+
+기존 전처리 배열과 학교 GPU 체크포인트를 준비한 뒤 저장소 루트에서 실행합니다. 설정과 표본 선택은 `configs/midterm.toml`에서 관리합니다.
+
+```bash
+python -m pip install '.[dev,xai]'
+OMP_NUM_THREADS=2 baf-evaluate-validation --config configs/midterm.toml
+OMP_NUM_THREADS=2 python -m baf.midterm_plots --config configs/midterm.toml
+OMP_NUM_THREADS=2 baf-xai-validation --config configs/midterm.toml
+```
+
+중간발표는 Validation 분석을 사용합니다. E4·E5의 설정과 임계값까지 고정한 뒤 B0~E5를 Test에서 최종 평가합니다.
 
 ## 코드 위치
 
