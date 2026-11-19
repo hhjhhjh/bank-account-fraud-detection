@@ -15,12 +15,14 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=8,<10"]
 torch = ["torch>=2.5,<3"]
+xai = ["torch>=2.5,<3", "captum>=0.8,<1"]
 
 [project.scripts]
 baf-data = "baf.cli:main"
 baf-env = "baf.runtime:main"
 baf-train = "baf.train:main"
 baf-evaluate-validation = "baf.evaluation:main"
+baf-xai-validation = "baf.xai:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
