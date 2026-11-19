@@ -20,6 +20,7 @@ torch = ["torch>=2.5,<3"]
 baf-data = "baf.cli:main"
 baf-env = "baf.runtime:main"
 baf-train = "baf.train:main"
+baf-evaluate-validation = "baf.evaluation:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
