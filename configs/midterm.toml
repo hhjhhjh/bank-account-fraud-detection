@@ -1,0 +1,20 @@
+processed_dir = "data/processed/full"
+checkpoint_dir = "checkpoints"
+output_dir = "results/midterm"
+device = "auto"
+batch_size = 1024
+models = ["b0", "e1", "e2", "e3"]
+seeds = [42, 43, 44]
+fpr_caps = [0.01, 0.05]
+
+[xai]
+model = "e1"
+seed = 42
+sampling_seed = 42
+global_sample_rows = 256
+local_fpr_cap = 0.05
+initial_steps = 256
+max_steps = 2048
+internal_batch_size = 1024
+completeness_atol = 0.01
+completeness_rtol = 0.01

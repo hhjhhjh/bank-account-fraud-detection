@@ -222,3 +222,34 @@ def test_residual_mlp_uses_weighted_bce_and_resumes(b0_config, tmp_path):
     e1_config["training"]["epochs"] = 2
     with pytest.raises(ValueError, match="configuration or data"):
         train.train_mlp(e1_config, tmp_path / "wrong-architecture", resume=checkpoint)
+
+
+def test_validation_evaluation_uses_saved_model_and_never_opens_test(b0_config, tmp_path, monkeypatch):
+    from baf.evaluation import evaluate_validation
+
+    b0_config["training"].update(loss="weighted_bce", epochs=1)
+    checkpoint_root = tmp_path / "checkpoints"
+    train.train_mlp(b0_config, checkpoint_root / "e1/school-e1-seed42")
+    original_load = np.load
+
+    def forbid_test(path, *args, **kwargs):
+        assert not Path(path).name.startswith("test_")
+        return original_load(path, *args, **kwargs)
+
+    monkeypatch.setattr(np, "load", forbid_test)
+    config = {
+        "processed_dir": b0_config["data"]["processed_dir"],
+        "checkpoint_dir": str(checkpoint_root), "output_dir": str(tmp_path / "evaluation"),
+        "device": "cpu", "batch_size": 16, "models": ["e1"], "seeds": [42], "fpr_caps": [0.01, 0.05],
+    }
+    result = evaluate_validation(config)
+    assert result["split"] == "validation" and result["rows"] == 30
+    run = result["runs"][0]
+    assert run["ap"] == pytest.approx(run["training_validation_ap"])
+    assert all(row["fpr"] <= row["fpr_cap"] for row in run["operating_points"])
+    data = Path(config["processed_dir"])
+    features = original_load(data / "validation_X.npy")
+    features[0, 0] += 1
+    np.save(data / "validation_X.npy", features)
+    with pytest.raises(ValueError, match="dataset mismatch"):
+        evaluate_validation(config)
