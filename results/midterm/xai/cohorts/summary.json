@@ -1,0 +1,120 @@
+{
+  "split": "validation",
+  "run_name": "school-e1-seed42",
+  "checkpoint_sha256": "f21520a9ca91709ae9acbc57a60346ea816df1f5a1beb2cb4b2da419d54b0d6c",
+  "population_summary_sha256": "83ea0737313c636a3fac5d104db823165f8ee5bfeafb90530ae088e7fe122941",
+  "output_explained": "fraud_logit",
+  "baseline": "same transformed Train mean as population analysis",
+  "device": "cpu",
+  "operating_point": {
+    "fpr_cap": 0.05,
+    "threshold": 1.4640449285507202,
+    "fpr": 0.04986975018272456,
+    "precision": 0.12149224166391548,
+    "recall": 0.5075862068965518,
+    "f1": 0.19605753862546618,
+    "tp": 736,
+    "tn": 101396,
+    "fp": 5322,
+    "fn": 714,
+    "confusion_matrix": [
+      [
+        101396,
+        5322
+      ],
+      [
+        714,
+        736
+      ]
+    ]
+  },
+  "sampling_seed": 42,
+  "torch_version": "2.15.0",
+  "captum_version": "0.9.0",
+  "grouping": "sum signed columns per original feature before computing cohort statistics",
+  "sampling": "uniform without replacement within TP and FN; random draw order preserved",
+  "cohorts": {
+    "TP": {
+      "available_rows": 736,
+      "sampled_rows": 100
+    },
+    "FN": {
+      "available_rows": 714,
+      "sampled_rows": 100
+    }
+  },
+  "subset_rows": 50,
+  "explained_rows": 200,
+  "settings": {
+    "model": "e1",
+    "seed": 42,
+    "sampling_seed": 42,
+    "global_sample_rows": 256,
+    "local_fpr_cap": 0.05,
+    "initial_steps": 256,
+    "max_steps": 2048,
+    "internal_batch_size": 1024,
+    "completeness_atol": 0.01,
+    "completeness_rtol": 0.01,
+    "cohorts": {
+      "per_group_rows": 100,
+      "subset_rows": 50
+    }
+  },
+  "stability": {
+    "TP": {
+      "subset_vs_full": {
+        "spearman_rank_correlation": 0.992880978865406,
+        "top_k": 10,
+        "top_k_overlap": 10,
+        "top_k_signed_mean_agreement": 1.0,
+        "sample_sizes": [
+          50,
+          100
+        ],
+        "overlapping_rows": 50
+      },
+      "split_half": {
+        "spearman_rank_correlation": 0.9844271412680755,
+        "top_k": 10,
+        "top_k_overlap": 9,
+        "top_k_signed_mean_agreement": 1.0,
+        "sample_sizes": [
+          50,
+          50
+        ],
+        "overlapping_rows": 0
+      }
+    },
+    "FN": {
+      "subset_vs_full": {
+        "spearman_rank_correlation": 0.9826473859844269,
+        "top_k": 10,
+        "top_k_overlap": 9,
+        "top_k_signed_mean_agreement": 1.0,
+        "sample_sizes": [
+          50,
+          100
+        ],
+        "overlapping_rows": 50
+      },
+      "split_half": {
+        "spearman_rank_correlation": 0.9474972191323694,
+        "top_k": 10,
+        "top_k_overlap": 9,
+        "top_k_signed_mean_agreement": 0.9,
+        "sample_sizes": [
+          50,
+          50
+        ],
+        "overlapping_rows": 0
+      }
+    }
+  },
+  "completeness": {
+    "max_abs_residual": 0.019101960468105972,
+    "mean_abs_residual": 0.004703424216103968,
+    "samples_exceeding_tolerance": 0,
+    "max_steps_used": 256
+  }
+}

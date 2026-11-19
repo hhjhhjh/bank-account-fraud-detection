@@ -18,3 +18,7 @@ max_steps = 2048
 internal_batch_size = 1024
 completeness_atol = 0.01
 completeness_rtol = 0.01
+
+[xai.cohorts]
+per_group_rows = 100
+subset_rows = 50

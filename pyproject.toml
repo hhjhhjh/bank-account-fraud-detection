@@ -23,6 +23,7 @@ baf-env = "baf.runtime:main"
 baf-train = "baf.train:main"
 baf-evaluate-validation = "baf.evaluation:main"
 baf-xai-validation = "baf.xai:main"
+baf-xai-cohorts = "baf.xai_cohorts:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

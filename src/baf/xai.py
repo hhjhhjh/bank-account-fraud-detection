@@ -29,6 +29,13 @@ def group_attributions(attributions, mapping):
     return grouped, names
 
 
+def train_mean_baseline(features):
+    total = np.zeros(features.shape[1], dtype=np.float64)
+    for start in range(0, len(features), 16384):
+        total += features[start:start + 16384].sum(axis=0, dtype=np.float64)
+    return (total / len(features)).astype(np.float32)
+
+
 def select_local_cases(labels, scores, threshold):
     predicted = scores >= threshold
     masks = {"TP": (labels == 1) & predicted, "FN": (labels == 1) & ~predicted,
@@ -107,11 +114,7 @@ def run_xai(config):
     rows = np.unique(np.r_[global_rows, local_rows])
 
     # Accumulate the mean in float64 without materializing the full Train array.
-    train = arrays["train"][0]
-    total = np.zeros(train.shape[1], dtype=np.float64)
-    for start in range(0, len(train), 16384):
-        total += train[start:start + 16384].sum(axis=0, dtype=np.float64)
-    baseline_values = (total / len(train)).astype(np.float32)
+    baseline_values = train_mean_baseline(arrays["train"][0])
     baseline = torch.tensor(baseline_values[None, :], device=device)
     inputs = torch.tensor(np.array(features[rows]), device=device)
     checked_scores = predict_logits(model, np.array(features[rows]), config["batch_size"], device)

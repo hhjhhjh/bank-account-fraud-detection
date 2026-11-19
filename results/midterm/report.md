@@ -70,6 +70,38 @@ Validation에서 시드 42로 클래스 비율을 유지한 256건을 추출했�
 
 IG 기여도 합과 logit 차이의 절대 잔차는 평균 0.003764, 최대 0.017204였습니다. 허용 기준은 0.01 + 0.01 × |logit 차이|이며, 259건 모두 이 기준을 만족했습니다. Gauss–Legendre 256단계를 사용했고 기준 미달 시 2,048단계까지 늘리도록 구현했습니다. 자세한 수치와 사례별 기여도는 [XAI 기록](xai/summary.json), [원래 특성 집계](xai/global_importance.csv), [인코딩 열 집계](xai/transformed_importance.csv)에 있습니다. [Captum IG 문서](https://captum.ai/api/integrated_gradients.html)
 
+## 사기 탐지·미탐 집단 비교
+
+사기 표본이 3건인 전체 신청 분석을 보완하려고 모델이 탐지한 사기인 TP 100건과 놓친 사기인 FN 100건을 별도로 설명했습니다. E1 시드 42의 FPR 5% 임계값에서 TP 736건, FN 714건 중 각각 100건을 시드 42로 비복원 무작위 추출했습니다. 같은 체크포인트, 사기 logit, Train 평균 baseline을 사용했습니다.
+
+이 200건은 사기 탐지와 미탐 집단의 비교 표본입니다. 기존 256건의 전체 신청 중요도와 함께 보관하며, 집단별 결과는 해당 집단 안에서 해석합니다. 원래 특성 단위로 signed attribution을 합한 뒤 집단별 평균 절댓값과 평균 signed attribution, 양·음의 기여 비율을 계산했습니다.
+
+| 특성 | TP 평균 signed 기여도 | FN 평균 signed 기여도 |
+|---|---:|---:|
+| device_os | +0.401506 | +0.062237 |
+| housing_status | +0.588286 | +0.264134 |
+| proposed_credit_limit | +0.412594 | +0.134086 |
+| current_address_months_count | −0.138407 | −0.319782 |
+
+이 표본에서 device_os·housing_status·proposed_credit_limit의 평균 양의 기여도는 TP에서 더 컸습니다. current_address_months_count는 FN에서 평균적으로 더 강하게 점수를 낮추는 방향으로 기여했습니다. TP·FN은 이미 예측 점수와 임계값으로 구분한 집단이므로, 이 차이는 해당 표본에서 관측한 모델 설명으로 해석합니다. 원본 특성값 자체의 분포 차이나 사기 발생 원인은 별도 분석이 필요합니다.
+
+표본 수 민감도를 확인하려고 추출 순서의 앞 50건과 전체 100건을 비교했습니다. Spearman 순위 상관은 1에 가까울수록 중요도 순서가 비슷하다는 뜻입니다.
+
+| 집단 | 50건·100건 중요도 순위 상관 | 상위 10개 중 공통 특성 | 공통 행 없는 50건씩 순위 상관 | 두 50건의 상위 10개 평균 기여 방향 일치율 |
+|---|---:|---:|---:|---:|
+| TP | 0.993 | 10개 | 0.984 | 100% |
+| FN | 0.983 | 9개 | 0.947 | 90% |
+
+앞 50건은 전체 100건에 포함되므로 두 결과는 겹치는 표본을 사용합니다. 이를 보완해 앞·뒤 50건도 비교했으며, FN에서 중요도 순서와 일부 기여 방향의 변동이 더 컸습니다. 위 방향 일치율은 뒤 50건의 중요도 상위 10개를 기준으로 앞·뒤 평균 signed 기여도의 부호를 비교한 값입니다. 이는 이번 한 번의 추출에서 본 표본 민감도 점검이며, 다른 추출 시드나 baseline에서의 안정성은 추가 검증이 필요합니다.
+
+새 200건의 IG 절대 잔차는 평균 0.004703, 최대 0.019102였습니다. 기존과 같은 허용 기준을 모두 만족했고 256단계를 사용했습니다. [집단별 기여도](xai/cohorts/feature_summary.csv), [표본 선정 기록](xai/cohorts/sample_selection.csv), [민감도·완전성 기록](xai/cohorts/summary.json)에 계산 결과를 저장했습니다.
+
+| 그림 | 핵심 해석 |
+|---|---|
+| [TP·FN 평균 절대 기여도](figures/ig_tp_fn_absolute.png) | TP와 FN 각각에서 모델 출력에 크게 기여한 특성을 비교합니다. 전체 신청의 중요도와 해석 범위가 다릅니다. |
+| [TP·FN 평균 signed 기여도](figures/ig_tp_fn_signed.png) | 두 집단의 평균 기여도 차이가 큰 12개 특성의 기여 방향을 비교합니다. 특성별 양·음의 상쇄를 고려해 절대 기여도와 함께 읽습니다. |
+| [50건·100건 중요도 비교](figures/ig_tp_fn_stability.png) | 두 축이 비슷할수록 표본 수를 늘려도 평균 절대 기여도가 비슷합니다. 두 표본이 겹친다는 점을 함께 밝힙니다. |
+
 ## 실행과 검증
 
 저장소 루트에서 기존 전처리 배열과 학교 GPU 체크포인트를 사용했습니다.
@@ -79,10 +111,11 @@ python -m pip install '.[dev,xai]'
 OMP_NUM_THREADS=2 baf-evaluate-validation --config configs/midterm.toml
 OMP_NUM_THREADS=2 python -m baf.midterm_plots --config configs/midterm.toml
 OMP_NUM_THREADS=2 baf-xai-validation --config configs/midterm.toml
+OMP_NUM_THREADS=2 baf-xai-cohorts --config configs/midterm.toml
 OMP_NUM_THREADS=2 python -m pytest -q
 ```
 
-실제 로컬 실행은 .venv의 Python과 PYTHONPATH=src를 사용했고, 그림 저장 시 MPLCONFIGDIR=/tmp/baf-matplotlib을 지정했습니다. 패키지를 재설치해 CLI 진입점을 등록했습니다. 평가와 XAI 재실행에서 Test 배열을 열면 실패하는 검사를 적용했고 Train·Validation 파일만 열리는 것을 확인했습니다. 동점 임계값, FPR 상한의 최적해, 양성 예측 0건, 파일 해시 불일치, 선형 모델의 IG 완전성, 특성 집계 테스트를 포함해 전체 68개가 통과했습니다.
+실제 로컬 실행은 .venv의 Python과 PYTHONPATH=src를 사용했고, 그림 저장 시 MPLCONFIGDIR=/tmp/baf-matplotlib을 지정했습니다. 패키지를 재설치해 CLI 진입점을 등록했습니다. 평가와 XAI 실행에서 Test 배열을 열면 실패하는 검사를 적용했고 Train·Validation 파일만 열리는 것을 확인했습니다. 동점 임계값, FPR 상한의 최적해, 양성 예측 0건, 파일 해시 불일치, 선형 모델의 IG 완전성, 특성 집계, TP·FN 표본 선정과 통계 테스트를 포함해 전체 71개가 통과했습니다.
 
 평가 예측과 개별 IG 배열은 로컬 npz 파일로 보관합니다. 결과를 같은 설정으로 재실행하면 결과 파일을 갱신하며, 기존 모델 체크포인트는 읽기 전용으로 사용합니다.
 
@@ -90,7 +123,7 @@ OMP_NUM_THREADS=2 python -m pytest -q
 
 이번 수치는 모델 선택에도 사용한 동일한 Validation에서 얻었습니다. 독립 Test 성능은 E4·E5까지 설정을 고정한 뒤 평가합니다. 세 시드의 표준편차는 초기화·학습 순서에 따른 변동이며 독립 데이터셋에 대한 신뢰구간으로 해석할 수 없습니다.
 
-감마 탐색은 E2에 추가 예산을 사용했습니다. 구조 비교에서는 파라미터 수를 비슷하게 맞췄지만 층 수와 너비도 달라 잔차 연결만의 효과를 분리하지 못했습니다. XAI는 작은 표본, 단일 시드, 단일 baseline의 초기 분석입니다.
+감마 탐색은 E2에 추가 예산을 사용했습니다. 구조 비교에서는 파라미터 수를 비슷하게 맞췄지만 층 수와 너비도 달라 잔차 연결만의 효과를 분리하지 못했습니다. XAI는 전체 신청 256건과 별도 사기 집단 200건의 단일 시드·단일 baseline 분석입니다.
 
 ## 후속 일정
 

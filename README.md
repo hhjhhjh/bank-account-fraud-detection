@@ -227,7 +227,7 @@ FPR은 정상 신청 중 사기로 잘못 판정한 비율입니다. AP를 모�
 
 ## 중간발표 분석
 
-[Validation 분석 보고서](results/midterm/report.md)와 [8분 발표 구성](results/midterm/presentation-notes.md)에 B0~E3의 FPR 1%·5% 평가와 E1의 Integrated Gradients 결과를 정리했습니다. PNG·SVG 그림은 [발표용 그림](results/midterm/figures/)에서 확인할 수 있습니다.
+[Validation 분석 보고서](results/midterm/report.md)와 [8분 발표 구성](results/midterm/presentation-notes.md)에 B0~E3의 FPR 1%·5% 평가와 E1의 Integrated Gradients 결과를 정리했습니다. TP·FN 각 100건의 기여도 비교와 50건·100건 표본 민감도도 확인할 수 있습니다. PNG·SVG 그림은 [발표용 그림](results/midterm/figures/)에서 확인할 수 있습니다.
 
 기존 전처리 배열과 학교 GPU 체크포인트를 준비한 뒤 저장소 루트에서 실행합니다. 설정과 표본 선택은 `configs/midterm.toml`에서 관리합니다.
 
@@ -236,6 +236,7 @@ python -m pip install '.[dev,xai]'
 OMP_NUM_THREADS=2 baf-evaluate-validation --config configs/midterm.toml
 OMP_NUM_THREADS=2 python -m baf.midterm_plots --config configs/midterm.toml
 OMP_NUM_THREADS=2 baf-xai-validation --config configs/midterm.toml
+OMP_NUM_THREADS=2 baf-xai-cohorts --config configs/midterm.toml
 ```
 
 중간발표는 Validation 분석을 사용합니다. E4·E5의 설정과 임계값까지 고정한 뒤 B0~E5를 Test에서 최종 평가합니다.
