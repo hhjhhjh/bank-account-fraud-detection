@@ -16,6 +16,7 @@ from baf.cli import load_config, sha256_file, write_json
 from baf.losses import BinaryFocalLoss
 from baf.models import BaselineMLP, ResidualMLP
 from baf.runtime import resolve_device
+from baf.sampling import oversample_train_rows
 from baf.schema import TARGET, TIME
 
 
@@ -144,6 +145,9 @@ def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path 
                 raise ValueError(f"model.{name} must be a positive integer")
     else:
         raise ValueError("model.architecture must be mlp or residual_mlp")
+    oversampling_ratio = training.get("oversampling_ratio")
+    if oversampling_ratio is not None and (architecture != "mlp" or loss_name != "bce"):
+        raise ValueError("Random oversampling requires the baseline MLP with BCE for E4")
     dropout = model_config["dropout"]
     if not 0 <= dropout < 1:
         raise ValueError("dropout must be in [0, 1)")
@@ -165,6 +169,12 @@ def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path 
         if type(limit) is not int or limit < 2:
             raise ValueError(f"{split}_rows must be an integer of at least 2")
         selections[split] = select_rows(labels, limit, seed)
+
+    training_rows = selections["train"]
+    if oversampling_ratio is not None:
+        training_rows = oversample_train_rows(arrays["train"][1], training_rows, oversampling_ratio, seed=seed)
+    fraud_presentations = int(arrays["train"][1][training_rows].sum())
+    optimizer_steps = math.ceil(len(training_rows) / batch_size)
 
     model_args = {"input_dim": arrays["train"][0].shape[1], "dropout": dropout, **architecture_args}
     signature = {
@@ -193,6 +203,8 @@ def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path 
         signature.update(experiment="E2", loss="BinaryFocalLoss", focal_gamma=training_loss_fn.gamma)
     if architecture == "residual_mlp":
         signature.update(experiment="E3", architecture=architecture)
+    if oversampling_ratio is not None:
+        signature.update(experiment="E4", oversampling_ratio=float(oversampling_ratio))
 
     history, best, stale_epochs = [], None, 0
     if resume is not None:
@@ -216,7 +228,7 @@ def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path 
         started = time.perf_counter()
         # Derive shuffle and dropout seeds from the epoch so resume needs no RNG snapshot.
         torch.manual_seed(seed + epoch)
-        order = np.random.default_rng(seed + epoch).permutation(selections["train"])
+        order = np.random.default_rng(seed + epoch).permutation(training_rows)
         train_loss = train_epoch(
             model, batches(arrays["train"], order, batch_size, device), training_loss_fn, optimizer, scaler
         )
@@ -225,6 +237,8 @@ def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path 
         history.append({
             "epoch": epoch, "train_loss": train_loss, "validation_loss": val_loss,
             "validation_ap": val_ap, "seconds": time.perf_counter() - started, "device": device,
+            "training_rows": len(training_rows), "fraud_presentations": fraud_presentations,
+            "optimizer_steps": optimizer_steps,
         })
         if best is None or val_ap > best["validation_ap"]:
             best = {
@@ -253,6 +267,16 @@ def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path 
         "best_epoch": best["epoch"], "best_validation_ap": best["validation_ap"],
         "total_epoch_seconds": sum(row["seconds"] for row in history),
         "trainable_parameters": sum(parameter.numel() for parameter in model.parameters() if parameter.requires_grad),
+        "training_work": {
+            "original_train_rows": len(selections["train"]),
+            "rows_per_epoch": len(training_rows),
+            "fraud_presentations_per_epoch": fraud_presentations,
+            "normal_presentations_per_epoch": len(training_rows) - fraud_presentations,
+            "actual_fraud_to_normal_ratio": fraud_presentations / (len(training_rows) - fraud_presentations),
+            "optimizer_steps_per_epoch": optimizer_steps,
+            "total_training_rows": len(training_rows) * len(history),
+            "total_optimizer_steps": optimizer_steps * len(history),
+        },
         "splits": {
             split: {"rows": len(rows), "fraud_count": int(arrays[split][1][rows].sum())}
             for split, rows in selections.items()
@@ -275,6 +299,7 @@ def main():
     parser.add_argument("--seed", type=int, help="Override the experiment seed")
     parser.add_argument("--epochs", type=int, help="Total epoch limit, including completed epochs when resuming")
     parser.add_argument("--focal-gamma", type=float, help="Override gamma for a focal loss configuration")
+    parser.add_argument("--oversampling-ratio", type=float, help="E4 target fraud/normal ratio after Train oversampling")
     parser.add_argument("--device", choices=("auto", "cpu", "mps", "cuda"))
     parser.add_argument("--smoke", action="store_true")
     parser.add_argument("--resume", type=Path, help="Resume a last.pt checkpoint into a new run directory")
@@ -293,6 +318,8 @@ def main():
             if config["training"].get("loss") != "focal":
                 raise ValueError("--focal-gamma requires a focal loss configuration")
             config["training"]["focal_gamma"] = args.focal_gamma
+        if args.oversampling_ratio is not None:
+            config["training"]["oversampling_ratio"] = args.oversampling_ratio
         if args.device is not None:
             config["runtime"]["device"] = args.device
         run_dir = Path(config["training"]["checkpoint_dir"]) / args.run_name

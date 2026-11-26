@@ -41,6 +41,11 @@ def test_resume_matches_continuous_training_and_restores_best_checkpoint(b0_conf
     first = {**b0_config, "training": {**b0_config["training"], "epochs": 1}}
     train_b0(first, tmp_path / "first", smoke=True)
     checkpoint = tmp_path / "first" / "last.pt"
+    legacy = torch.load(checkpoint, weights_only=True)
+    for row in legacy["history"]:
+        for field in ("training_rows", "fraud_presentations", "optimizer_steps"):
+            row.pop(field)
+    torch.save(legacy, checkpoint)
     resumed = train_b0(b0_config, tmp_path / "resumed", smoke=True, resume=checkpoint)
 
     assert resumed["mode"] == "smoke"
@@ -253,3 +258,94 @@ def test_validation_evaluation_uses_saved_model_and_never_opens_test(b0_config, 
     np.save(data / "validation_X.npy", features)
     with pytest.raises(ValueError, match="dataset mismatch"):
         evaluate_validation(config)
+
+
+def test_e4_oversamples_train_only_and_records_work(b0_config, tmp_path, monkeypatch):
+    data = Path(b0_config["data"]["processed_dir"])
+    np.save(data / "train_y.npy", (np.arange(60) < 6).astype(np.int64))
+    np.save(data / "validation_y.npy", (np.arange(30) < 20).astype(np.int64))
+    b0_config["training"].update(loss="bce", oversampling_ratio=0.5, epochs=1)
+    expected_labels = np.load(data / "validation_y.npy")
+    expected_rows = train.select_rows(expected_labels, 20, 42)
+    original_train, original_validate = train.train_epoch, train.validate_epoch
+
+    def check_train(model, batches, loss_fn, optimizer, scaler):
+        batches = list(batches)
+        labels = torch.cat([y for _, y in batches])
+        assert loss_fn.pos_weight is None
+        assert len(labels) == 54 and int(labels.sum()) == 18
+        return original_train(model, iter(batches), loss_fn, optimizer, scaler)
+
+    def check_validation(model, batches, loss_fn):
+        batches = list(batches)
+        labels = torch.cat([y for _, y in batches])
+        np.testing.assert_array_equal(labels.numpy(), expected_labels[expected_rows])
+        assert loss_fn.pos_weight is None
+        return original_validate(model, iter(batches), loss_fn)
+
+    monkeypatch.setattr(train, "train_epoch", check_train)
+    monkeypatch.setattr(train, "validate_epoch", check_validation)
+    result = train.train_mlp(b0_config, tmp_path / "e4", smoke=True)
+    assert result["signature"]["experiment"] == "E4"
+    assert result["signature"]["oversampling_ratio"] == 0.5
+    assert result["splits"]["train"] == {"rows": 40, "fraud_count": 4}
+    assert result["splits"]["validation"] == {"rows": 20, "fraud_count": int(expected_labels[expected_rows].sum())}
+    assert result["training_work"]["rows_per_epoch"] == 54
+    assert result["training_work"]["optimizer_steps_per_epoch"] == 4
+    assert result["training_work"]["total_optimizer_steps"] == 4
+
+
+def test_e4_resume_is_exact_and_rejects_sampling_ratio_change(b0_config, tmp_path):
+    data = Path(b0_config["data"]["processed_dir"])
+    np.save(data / "train_y.npy", (np.arange(60) < 6).astype(np.int64))
+    b0_config["training"].update(loss="bce", oversampling_ratio=0.5, epochs=2)
+    continuous = train.train_mlp(b0_config, tmp_path / "continuous-e4")
+    b0_config["training"]["epochs"] = 1
+    train.train_mlp(b0_config, tmp_path / "first-e4")
+    b0_config["training"]["epochs"] = 2
+    checkpoint = tmp_path / "first-e4/last.pt"
+    resumed = train.train_mlp(b0_config, tmp_path / "resumed-e4", resume=checkpoint)
+    for field in ("train_loss", "validation_loss", "validation_ap"):
+        assert [r[field] for r in continuous["history"]] == [r[field] for r in resumed["history"]]
+    assert resumed["training_work"] == continuous["training_work"]
+    a = torch.load(tmp_path / "continuous-e4/last.pt", weights_only=True)
+    b = torch.load(tmp_path / "resumed-e4/last.pt", weights_only=True)
+    for key in a["model_state"]:
+        torch.testing.assert_close(a["model_state"][key], b["model_state"][key], rtol=0, atol=0)
+    b0_config["training"]["oversampling_ratio"] = 1.0
+    with pytest.raises(ValueError, match="configuration or data"):
+        train.train_mlp(b0_config, tmp_path / "different-ratio", resume=checkpoint)
+
+
+def test_e4_rejects_combined_class_weighting(b0_config, tmp_path):
+    b0_config["training"].update(loss="weighted_bce", oversampling_ratio=1.0)
+    with pytest.raises(ValueError, match="MLP with BCE"):
+        train.train_mlp(b0_config, tmp_path / "combined")
+
+
+def test_cli_overrides_oversampling_ratio_and_preserves_e4_contract(b0_config, tmp_path, monkeypatch):
+    data = Path(b0_config["data"]["processed_dir"])
+    np.save(data / "train_y.npy", (np.arange(60) < 6).astype(np.int64))
+    b0_config["training"].update(loss="bce", epochs=1, oversampling_ratio=0.1, checkpoint_dir=str(tmp_path))
+    monkeypatch.setattr(train, "load_config", lambda path: b0_config)
+    monkeypatch.setattr("sys.argv", ["baf-train", "--run-name", "ratio-check", "--oversampling-ratio", "0.5"])
+    train.main()
+    result = json.loads((tmp_path / "ratio-check/metrics.json").read_text())
+    assert result["signature"]["experiment"] == "E4"
+    assert result["signature"]["oversampling_ratio"] == 0.5
+    assert result["training_work"]["fraud_presentations_per_epoch"] == 27
+
+
+def test_e4_config_matches_b0_except_sampling_and_checkpoint_path():
+    configs = Path(__file__).resolve().parents[1] / "configs"
+    baseline = train.load_config(configs / "b0.toml")
+    sampled = train.load_config(configs / "e4.toml")
+    assert sampled["model"] == baseline["model"]
+    assert sampled["data"] == baseline["data"]
+    assert sampled["runtime"] == baseline["runtime"]
+    assert sampled["smoke"] == baseline["smoke"]
+    excluded = {"oversampling_ratio", "loss", "checkpoint_dir"}
+    assert {k: v for k, v in sampled["training"].items() if k not in excluded} == {
+        k: v for k, v in baseline["training"].items() if k not in excluded
+    }
+    assert sampled["training"]["loss"] == "bce"
