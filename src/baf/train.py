@@ -118,7 +118,7 @@ def save_checkpoint(path: Path, payload: dict) -> None:
             temporary.unlink(missing_ok=True)
 
 
-def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path | None = None) -> dict:
+def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path | None = None, dry_run: bool = False) -> dict:
     training = config["training"]
     model_config = config["model"]
     loss_name = training.get("loss", "bce")
@@ -215,6 +215,14 @@ def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path 
     if oversampling_ratio is not None:
         signature.update(experiment="E4", oversampling_ratio=float(oversampling_ratio))
 
+    if dry_run:
+        if resume is not None:
+            raise ValueError("dry-run cannot be combined with resume")
+        return {
+            "signature": signature, "requested_epochs": epochs,
+            "trainable_parameters": sum(p.numel() for p in model.parameters() if p.requires_grad),
+        }
+
     history, best, stale_epochs = [], None, 0
     if resume is not None:
         state = torch.load(resume, map_location="cpu", weights_only=True)
@@ -307,6 +315,8 @@ def main():
     parser.add_argument("--batch-size", type=int)
     parser.add_argument("--seed", type=int, help="Override the experiment seed")
     parser.add_argument("--epochs", type=int, help="Total epoch limit, including completed epochs when resuming")
+    parser.add_argument("--learning-rate", type=float, help="Override the configured learning rate")
+    parser.add_argument("--dry-run", action="store_true", help="Validate inputs and print the signature without training or saving")
     parser.add_argument("--focal-gamma", type=float, help="Override gamma for a focal loss configuration")
     parser.add_argument("--oversampling-ratio", type=float, help="E4 target fraud/normal ratio after Train oversampling")
     parser.add_argument("--device", choices=("auto", "cpu", "mps", "cuda"))
@@ -323,6 +333,8 @@ def main():
             config["training"]["seed"] = args.seed
         if args.epochs is not None:
             config["training"]["epochs"] = args.epochs
+        if args.learning_rate is not None:
+            config["training"]["learning_rate"] = args.learning_rate
         if args.focal_gamma is not None:
             if config["training"].get("loss") != "focal":
                 raise ValueError("--focal-gamma requires a focal loss configuration")
@@ -332,9 +344,12 @@ def main():
         if args.device is not None:
             config["runtime"]["device"] = args.device
         run_dir = Path(config["training"]["checkpoint_dir"]) / args.run_name
-        result = train_mlp(config, run_dir, smoke=args.smoke, resume=args.resume)
+        result = train_mlp(config, run_dir, smoke=args.smoke, resume=args.resume, dry_run=args.dry_run)
     except (OSError, ValueError, KeyError) as error:
         parser.exit(2, f"error: {error}\n")
+    if args.dry_run:
+        print(json.dumps(result, indent=2))
+        return
     experiment = result["signature"]["experiment"]
     print(f"Saved {experiment} metrics and checkpoints to {run_dir}. Best validation AP: {result['best_validation_ap']:.6f}")
 

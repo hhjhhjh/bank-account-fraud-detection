@@ -4,6 +4,7 @@ import argparse
 import json
 import math
 import platform
+import re
 import time
 import tomllib
 from pathlib import Path
@@ -115,7 +116,10 @@ def evaluate_validation(config):
     results, rows = [], []
     for model_id in config["models"]:
         for seed in config["seeds"]:
-            name = f"school-e2-gamma0.5-seed{seed}" if model_id == "e2" else f"school-{model_id}-seed{seed}"
+            default = f"school-e2-gamma0.5-seed{seed}" if model_id == "e2" else f"school-{model_id}-seed{seed}"
+            name = config.get("run_names", {}).get(model_id, default).format(seed=seed)
+            if model_id not in ("b0", "e1", "e2", "e3", "e4", "e5") or not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_.-]*", name):
+                raise ValueError("Unknown model or invalid checkpoint run name")
             checkpoint = Path(config["checkpoint_dir"]) / model_id / name / "best.pt"
             model, state = load_frozen_model(checkpoint, fingerprints, device)
             signature = state["signature"]
@@ -171,7 +175,7 @@ def evaluate_validation(config):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Evaluate frozen B0–E3 checkpoints on Validation month 6")
+    parser = argparse.ArgumentParser(description="Evaluate frozen checkpoints on Validation month 6")
     parser.add_argument("--config", type=Path, default=Path("configs/midterm.toml"))
     args = parser.parse_args()
     evaluate_validation(load_analysis_config(args.config))

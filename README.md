@@ -214,7 +214,7 @@ baf-train --config configs/e4.toml --device cpu --smoke --batch-size 256 --epoch
   --run-name local-e4-smoke-resumed-seed42 --resume checkpoints/e4/local-e4-smoke-seed42/last.pt
 ```
 
-`configs/e4.toml`의 비율 0.1은 초기 확인용입니다. `--oversampling-ratio`로 바꿀 수 있으며, 최종 비율은 같은 학습 예산에서 Validation AP로 선택합니다. 오버샘플링으로 에포크당 학습량이 늘어나는 점을 비교표에 기록합니다. [로컬 실행 확인 기록](results/reference/oversampling-check.json)에는 작은 표본의 실행 결과와 전체 데이터에서 예상되는 학습량을 구분해 저장했습니다.
+`configs/e4.toml`의 비율 0.1을 공통 학습률 비교와 이후 학습률 탐색에서 유지합니다. `--oversampling-ratio`로 변경할 수 있지만, 이번 학습률 탐색에서는 비율을 함께 탐색하지 않습니다. 이 비율을 최적값으로 주장하지 않습니다. 오버샘플링으로 에포크당 학습량이 늘어나는 점을 비교표에 기록합니다. [로컬 실행 확인 기록](results/reference/oversampling-check.json)에는 작은 표본의 실행 결과와 전체 데이터에서 예상되는 학습량을 구분해 저장했습니다.
 
 ## FT-Transformer 학습
 
@@ -232,6 +232,30 @@ baf-train --config configs/e5.toml --device cpu --smoke --batch-size 64 --epochs
 
 기존 실행 폴더가 있으면 다른 이름을 사용합니다. E5의 작은 모델 설정은 동작 확인용이며, 이 표본의 AP로 기존 모델보다 성능이 좋은지 판단하지 않습니다. 학교 GPU에서 같은 분할과 시드로 전체 학습을 진행하기 전에 배치 크기와 메모리 사용량을 확인합니다. 최종 설정은 Validation으로 선정하고 Test는 모든 실험 설정을 고정한 뒤 사용합니다.
 
+## 공통 학습률 비교와 학습률 탐색
+
+[공통 학습률 비교 보고서](results/reference/fixed-lr-comparison/report.md)에 여섯 모델의 세 시드 Validation 평가, FPR 1%·5% 임계값, PR 곡선, 학습 시간과 파라미터 수를 기록했습니다. 기존 중간발표 산출물은 별도로 보존합니다.
+
+학습률 탐색은 `configs/learning-rate-search.toml`에서 관리합니다. 기본 MLP부터 Random Oversampling까지는 0.0003·0.001·0.003, FT-Transformer는 0.0001·0.0003·0.001을 비교합니다. 감마 0.5, 오버샘플링 비율 0.1, 기존 모델 구조와 전처리는 고정합니다. 먼저 시드 42에서 후보를 비교하고, 선정한 학습률로 시드 42·43·44를 보고합니다. 이 단계에서는 Test를 사용하지 않습니다.
+
+다음 명령 중 `plan`은 학습 없이 설정과 재사용 가능한 파일을 검사합니다. `run`과 `repeat`는 실제 학습 명령입니다. 학교 서버에 최신 코드를 반영하고 GPU 사용이 가능한 상태에서 실행합니다.
+
+```bash
+PYTHONPATH=src python -m baf.lr_search plan
+PYTHONPATH=src python -m baf.lr_search run --models b0 e1 e2 e3 e4
+PYTHONPATH=src python -m baf.lr_search run --models e5
+PYTHONPATH=src python -m baf.lr_search select
+PYTHONPATH=src python -m baf.lr_search repeat
+```
+
+시드 42의 기존 학습률 0.001 결과 여섯 개는 재사용하므로 신규 후보 학습은 12회입니다. 선정 학습률이 기존 값과 다른 모델만 시드 43·44를 추가 학습하므로 반복 학습은 0~12회입니다. 입력 데이터 해시, 모델·손실·학습 설정, 완료 에포크, 체크포인트와 로그의 일치 여부, 저장 가중치를 확인한 실행만 재사용합니다.
+
+선정 기준은 반올림 전 Validation AP입니다. 정확히 동률이면 0.001을 우선하고 그 값이 동률 후보에 없으면 낮은 학습률을 선택합니다. 작은 차이에 임의의 통계적 유의성을 부여하지 않습니다. 선정에 쓴 시드 42가 최종 세 시드 보고에도 포함되는 한계를 기록합니다. 후보 목록·설정·코드·체크포인트 해시가 바뀌면 저장한 선정을 그대로 재사용하지 않습니다.
+
+새 가중치는 `checkpoints/lr-search/`, 후보·선정·반복 기록은 `results/learning-rate-search/`에 저장합니다. 완료 실행은 다시 학습하지 않습니다. 중단된 디렉터리는 자동으로 덮어쓰지 않으며, 확인 후 `run --resume-incomplete` 또는 `repeat --resume-incomplete`로 재개할 수 있습니다. 원래 디렉터리를 `.interrupted-숫자`로 보관한 뒤 `last.pt`에서 복구합니다.
+
+표의 `stop_reason`과 `best_at_epoch_limit`으로 조기 종료와 20에포크 상한을 구분합니다. 이 탐색은 정한 학습 예산 안에서의 학습률 비교이며 전역 최적화가 아닙니다. 기존 감마 탐색 등 전체 튜닝 이력과 시간도 함께 보고합니다. 개별 학습 CLI의 `--learning-rate`와 `--dry-run`으로도 설정을 확인할 수 있습니다.
+
 ## 연구 순서
 
 현재까지의 진행 상황과 후속 평가·XAI 계획은 [프로젝트 진행 기록](docs/project-status.md)에 정리했습니다.
@@ -244,8 +268,8 @@ baf-train --config configs/e5.toml --device cpu --smoke --batch-size 64 --epochs
 | E1 | MLP | Weighted BCE | 필수 실험으로 진행합니다. |
 | E2 | MLP | Focal Loss | 필수 실험으로 진행합니다. |
 | E3 | Residual MLP | Validation에서 선정한 손실함수 | 필수 실험으로 진행합니다. |
-| E4 | MLP | BCE와 Train 전용 Random Oversampling | 중간발표 이후 기말까지 수행할 계획입니다. |
-| E5 | FT-Transformer | 선정한 손실함수 | E4 이후 기말까지 수행할 계획입니다. |
+| E4 | MLP | BCE와 Train 전용 Random Oversampling | 비율 0.1의 세 시드 전체 학습과 Validation 평가를 마쳤습니다. |
+| E5 | FT-Transformer | Weighted BCE | 세 시드 전체 학습과 Validation 평가를 마쳤습니다. |
 
 MLP와 Residual MLP의 구조 효과는 같은 손실함수·분할·시드·튜닝 예산에서 비교합니다. Validation AP를 기준으로 체크포인트를 선정하고, 설정한 epoch 동안 개선이 없으면 Early Stopping을 적용합니다. AP는 불균형 데이터에서 Precision과 Recall의 관계를 요약하는 Average Precision입니다.
 

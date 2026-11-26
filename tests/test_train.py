@@ -314,6 +314,49 @@ def test_validation_evaluation_uses_saved_model_and_never_opens_test(b0_config, 
         evaluate_validation(config)
 
 
+def test_cli_learning_rate_override_and_dry_run_do_not_train(b0_config, tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(train, "load_config", lambda path: b0_config)
+    b0_config["training"]["checkpoint_dir"] = str(tmp_path / "checkpoints")
+    monkeypatch.setattr("sys.argv", ["baf-train", "--run-name", "preview", "--learning-rate", "0.0003", "--dry-run"])
+    monkeypatch.setattr(train, "train_epoch", lambda *args: pytest.fail("Dry run must not train"))
+    train.main()
+    result = json.loads(capsys.readouterr().out)
+    assert result["signature"]["learning_rate"] == 0.0003
+    assert not (tmp_path / "checkpoints").exists()
+
+
+@pytest.mark.parametrize("model_id", ["e4", "e5"])
+def test_validation_accepts_configured_run_names_without_opening_test(b0_config, tmp_path, monkeypatch, model_id):
+    from baf.evaluation import evaluate_validation
+
+    if model_id == "e4":
+        b0_config["training"].update(loss="bce", oversampling_ratio=1.0)
+    else:
+        b0_config["model"] = {
+            "architecture": "ft_transformer", "d_token": 8, "n_heads": 2,
+            "num_blocks": 1, "ffn_hidden": 12, "dropout": 0.1, "residual_dropout": 0.0,
+        }
+        b0_config["training"]["loss"] = "weighted_bce"
+    b0_config["training"]["epochs"] = 1
+    checkpoint_root = tmp_path / "checkpoints"
+    train.train_mlp(b0_config, checkpoint_root / model_id / "custom-seed42")
+    original_load = np.load
+
+    def forbid_test(path, *args, **kwargs):
+        assert not Path(path).name.startswith("test_")
+        return original_load(path, *args, **kwargs)
+
+    monkeypatch.setattr(np, "load", forbid_test)
+    result = evaluate_validation({
+        "processed_dir": b0_config["data"]["processed_dir"],
+        "checkpoint_dir": str(checkpoint_root), "output_dir": str(tmp_path / "evaluation"),
+        "device": "cpu", "batch_size": 16, "models": [model_id], "seeds": [42],
+        "fpr_caps": [0.01, 0.05], "run_names": {model_id: "custom-seed{seed}"},
+    })
+    assert result["runs"][0]["run_name"] == "custom-seed42"
+    assert all(p["fpr"] <= p["fpr_cap"] for p in result["runs"][0]["operating_points"])
+
+
 def test_e4_oversamples_train_only_and_records_work(b0_config, tmp_path, monkeypatch):
     data = Path(b0_config["data"]["processed_dir"])
     np.save(data / "train_y.npy", (np.arange(60) < 6).astype(np.int64))

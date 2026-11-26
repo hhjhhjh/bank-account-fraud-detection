@@ -1,8 +1,8 @@
 # BAF 프로젝트 진행 기록과 평가 계획
 
-2026년 11월 25일 기준으로 필수 모델 B0~E3의 학습과 Validation 비교를 마쳤습니다. E1 MLP의 Weighted BCE가 세 시드 모두에서 가장 높은 Validation AP를 기록했습니다. 11월 26일 중간발표를 위해 Validation의 FPR 평가와 E1의 초기 XAI를 실행했습니다. 중간발표 후 E4·E5를 수행하고 모든 설정을 고정한 뒤 최종 Test를 평가합니다.
+2026년 11월 26일 기준으로 여섯 모델의 학습률 0.001·세 시드 전체 학습과 Validation 비교를 마쳤습니다. 현재 조건에서는 FT-Transformer가 평균 AP와 FPR 1%·5% 조건의 평균 Recall에서 가장 높았습니다. 기존 중간발표 결과와 E1의 XAI는 보존합니다. 제한적 학습률 탐색 도구를 준비했으며, 탐색과 최종 Test 평가는 아직 실행하지 않았습니다.
 
-이 문서는 현재 진행 상황과 남은 작업을 기록합니다. 상세 실험 수치의 원본은 [손실함수 실행 기록](../results/reference/mlp-loss-comparison/runs.json)과 [모델 구조 실행 기록](../results/reference/mlp-architecture-comparison/runs.json)입니다.
+이 문서는 현재 진행 상황과 남은 작업을 기록합니다. 최신 비교는 [공통 학습률 보고서](../results/reference/fixed-lr-comparison/report.md)와 그 안의 원본 JSON·CSV를 참조합니다. 기존 [손실함수 실행 기록](../results/reference/mlp-loss-comparison/runs.json)과 [모델 구조 실행 기록](../results/reference/mlp-architecture-comparison/runs.json)도 유지합니다.
 
 ## 진행 상황
 
@@ -13,7 +13,8 @@
 | Phase 3 불균형 대응 | Weighted BCE와 Focal Loss를 구현하고 감마를 탐색했습니다. | [손실함수 보고서](../results/reference/mlp-loss-comparison/report.md)에 세 시드 비교를 기록했습니다. |
 | Phase 4 모델 구조 | 파라미터 수를 비슷하게 맞춘 Residual MLP를 구현했습니다. | [구조 비교 보고서](../results/reference/mlp-architecture-comparison/report.md)에 E1·E3 비교를 기록했습니다. |
 | 중간발표 Validation·초기 XAI | B0~E3의 FPR 1%·5% 평가와 E1 IG를 실행했습니다. | [분석 보고서](../results/midterm/report.md)에 지표와 그림을 정리했습니다. |
-| 기말 추가 실험·최종 평가 | E4·E5를 기말까지의 연구 목표에 포함합니다. | 설정 고정 후 B0~E5 Test 평가와 FN·XAI 심층 분석을 진행합니다. |
+| 추가 모델의 고정 조건 비교 | Random Oversampling과 FT-Transformer의 세 시드 학습을 마쳤습니다. | [공통 학습률 보고서](../results/reference/fixed-lr-comparison/report.md)에 Validation 지표와 비용을 기록했습니다. |
+| 학습률 탐색·최종 평가 | 후보 실행·기존 결과 재사용·선정·반복 도구를 준비했습니다. | 학습률 탐색과 최종 Test 평가는 아직 실행하지 않았습니다. |
 
 ## 데이터와 학습 조건
 
@@ -32,9 +33,11 @@
 | 모델 | Validation AP 평균 | 표본 표준편차 | 평균 학습·검증 시간 |
 |---|---:|---:|---:|
 | B0 MLP, BCE | 0.168481 | 0.000528 | 70.86초 |
-| E1 MLP, Weighted BCE | **0.171325** | 0.001794 | **50.88초** |
+| E1 MLP, Weighted BCE | 0.171325 | 0.001794 | 50.88초 |
 | E2 MLP, Focal Loss 감마 0.5 | 0.170141 | 0.002541 | 81.53초 |
 | E3 Residual MLP, Weighted BCE | 0.169892 | 0.001744 | 61.20초 |
+| E4 MLP, BCE·Random Oversampling | 0.165475 | 0.000652 | 35.44초 |
+| E5 FT-Transformer, Weighted BCE | **0.179754** | 0.001522 | 428.79초 |
 
 평균과 표준편차는 세 시드에서 계산했습니다. 시간은 각 실행이 종료될 때까지의 학습과 검증을 합한 값이며, 조기 종료에 따라 에포크 수가 다릅니다.
 
@@ -42,7 +45,7 @@ E1은 Train의 정상·사기 건수 비율인 96.532695를 양성 클래스 가
 
 E1은 B0보다 평균 AP가 0.002844 높았습니다. E1과 E3의 파라미터 수는 각각 15,745개와 15,826개이며, E3는 세 시드 모두 E1보다 AP가 낮았습니다. 이번 비교에서는 E1을 중간발표 XAI 대상으로 선정했습니다. 최종 모델은 E4·E5의 Validation 비교까지 마친 뒤 정합니다.
 
-로컬 CPU 7회와 학교 GPU 23회의 원본 로그 및 best.pt·last.pt는 로컬 checkpoints 폴더에 백업했습니다. E4·E5 로컬 구현 후 전체 테스트 97개가 통과했습니다. 원본 데이터·전처리 배열·가중치는 Git 추적에서 제외하고, 설정·집계 지표·보고서를 저장소에서 관리합니다.
+기존 중간발표 실행과 추가 두 모델의 전체 학습 여섯 실행에 대한 로그 및 best.pt·last.pt를 로컬 checkpoints 폴더에 백업했습니다. 학습률 탐색 도구 보완 후 전체 테스트 113개가 통과했습니다. 원본 데이터·전처리 배열·가중치는 Git 추적에서 제외하고, 설정·집계 지표·보고서를 저장소에서 관리합니다.
 
 ## 평가 기준
 
@@ -72,8 +75,9 @@ E1 시드 42의 사기 logit을 Train 평균 입력 baseline에서 Integrated Gr
 | 순서 | 작업 | 완료 조건 |
 |---|---|---|
 | 중간발표 전 | Validation FPR·XAI 분석과 발표 자료를 검토합니다. | 실제 수치와 원본 로그가 일치하고 각 그림의 한계를 설명합니다. |
-| 중간발표 후 E4 | MLP+BCE에 Train 전용 Random Oversampling을 적용합니다. | Train·Validation에서 비율을 탐색하고, 같은 세 시드로 반복하며 탐색 예산을 기록합니다. |
-| E4 이후 E5 | 검증된 FT-Transformer 연구 구현을 확인하고 실험합니다. | 출처·변경 사항·입력 구조·파라미터 수·학습 시간을 기록하고 같은 세 시드로 비교합니다. |
+| 공통 학습률 비교 | 기존 결과에 추가 두 모델의 전체 학습과 Validation 평가를 합쳤습니다. | 비율 0.1과 현재 FT-Transformer 구조의 세 시드 결과를 별도 경로에 기록했습니다. |
+| 제한적 학습률 탐색 | 시드 42에서 모델별 세 후보를 비교합니다. | 0.001 결과를 재사용하고 나머지 후보 12회만 새로 학습하며, Validation AP로 선정합니다. |
+| 선정 학습률 반복 | 선정 학습률을 고정하고 세 시드를 보고합니다. | 기존 실행을 재사용하며 필요한 시드 43·44 학습만 추가합니다. |
 | 전체 선택 고정 | B0~E5의 모델·손실·감마·샘플링·체크포인트·임계값을 고정합니다. | Validation AP로 최종 모델을 정하고 FPR 1%·5%의 임계값을 저장합니다. |
 | 최종 Test 평가 | 고정한 모델과 임계값을 월 7에 적용합니다. | AP·ROC-AUC와 실제 FPR·Precision·Recall·F1·혼동행렬을 모델별 세 시드 평균·표본 표준편차로 보고합니다. |
 | 오류·XAI 심층 분석 | 최종 모델의 FN·TP 및 FP·TN 특성 분포와 기여도를 비교합니다. | 낮은 FPR에서 놓친 사례, Validation·Test 차이, 표본 선택과 관측 패턴을 설명합니다. |
@@ -87,7 +91,7 @@ MLP+BCE의 Train 전용 Random Oversampling을 구현했습니다. 비율 0.1은
 
 로컬 CPU에서 원래 Train 20,000건을 에포크당 21,775건으로 늘렸고, Validation 10,000건을 사용했습니다. 학습을 2에포크에서 저장한 뒤 3에포크까지 재개하고 저장 모델의 AP 0.113750을 재현했습니다. 이 값은 소규모 기능 검증 결과입니다.
 
-[실행 확인 기록](../results/reference/oversampling-check.json)에 원래 분할과 샘플링 후 학습량을 저장했습니다. 전체 데이터의 비율 후보 0.1·0.25·0.5·1.0에 대한 표본 수와 배치 수는 학습량 예상치입니다. 이후 학교 GPU에서 비율을 Validation AP로 고르고 세 시드로 반복하며 튜닝 예산과 학습 시간을 보고합니다.
+[실행 확인 기록](../results/reference/oversampling-check.json)에 원래 분할과 샘플링 후 학습량을 저장했습니다. 전체 데이터의 비율 0.1·0.25·0.5·1.0에 대한 표본 수와 배치 수는 학습량 예상치입니다. 실제 전체 학습은 비율 0.1·학습률 0.001에서 세 시드로 실행했고, 평균 AP는 0.165475였습니다. 이후 학습률 탐색에서는 비율 0.1을 고정합니다.
 
 ## E5 로컬 개발
 
@@ -99,7 +103,13 @@ CPU에서 Train 2,000건·사기 21건과 Validation 1,000건·사기 13건을 �
 
 [원 논문](https://arxiv.org/abs/2106.11959)과 [연구자 코드](https://github.com/yandex-research/rtdl/blob/main/rtdl/modules.py)의 토큰화·Attention·ReGLU·CLS 구조를 참고했습니다. 비교 조건을 유지하기 위해 범주형 임베딩 대신 기존 원핫 열마다 수치 토큰을 만들었습니다. PyTorch MultiheadAttention을 사용하고 KV 압축과 마지막 층의 CLS 전용 query 최적화는 넣지 않았습니다. 기존 MLP처럼 모든 파라미터에 AdamW weight decay를 적용하며, 논문에서 사용하는 파라미터별 제외 규칙은 적용하지 않았습니다. 따라서 원 논문의 성능 재현과 구분해 보고합니다.
 
-학교 GPU에서는 E4 비율 탐색에 이어 E5의 메모리·학습 시간을 확인하고 전체 Train·Validation으로 설정을 선정합니다. 같은 세 시드로 반복한 뒤 B0~E5의 설정과 임계값을 고정하고 최종 Test 평가로 넘어갑니다.
+학교 GPU에서 같은 구조와 Weighted BCE, 학습률 0.001로 세 시드 전체 학습을 실행했습니다. 평균 AP는 0.179754였고 학습·검증 시간은 평균 428.79초였습니다. Validation FPR 1% 조건의 평균 Recall은 24.276%, 5%에서는 52.690%였습니다. 이 결과만으로 최종 모델을 확정하지 않고 학습률 탐색을 이어갑니다.
+
+## 제한적 학습률 탐색
+
+기본 MLP부터 Random Oversampling까지는 0.0003·0.001·0.003, FT-Transformer는 0.0001·0.0003·0.001을 비교합니다. 기존 감마 0.5, 오버샘플링 비율 0.1과 현재 모델 구조를 유지합니다. 시드 42에서 반올림 전 Validation AP로 선정하며 정확한 동률이면 0.001, 그 값이 없으면 낮은 학습률을 우선합니다. 실행 명령은 [README](../README.md)의 학습률 탐색 절에 있습니다.
+
+학습률 선정 뒤 시드 43·44를 추가하고 시드 42를 포함한 평균과 표본 표준편차를 보고합니다. 선정에 쓴 시드가 반복 보고에도 포함되는 한계를 밝힙니다. 학습률 후보 수만 같게 제한했으므로 기존 감마 탐색을 포함한 전체 튜닝 비용까지 같다고 주장하지 않습니다. 20에포크 상한 도달과 조기 종료를 구분하고, 모든 학습·체크포인트·Validation 임계값을 확정한 뒤 Test를 평가합니다.
 
 ## XAI 확장과 후속 연구
 

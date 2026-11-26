@@ -1,0 +1,28 @@
+{
+  "record_date": "2026-11-26",
+  "validation_runs": 18,
+  "evaluated_split": "validation",
+  "test_access_guard": "np.load rejected names starting with test_ during the actual Validation execution",
+  "arrays_opened": [
+    "train_X.npy",
+    "train_y.npy",
+    "validation_X.npy",
+    "validation_y.npy"
+  ],
+  "max_ap_difference_from_training": 5.337837325758432e-07,
+  "all_validation_fpr_caps_satisfied": true,
+  "full_test_suite_passed": 113,
+  "artifact_review": {
+    "findings": 1,
+    "rejected": 0,
+    "fixed": 1,
+    "fix": "Compare best weights across checkpoint copies, strict model loading, and finite tensors."
+  },
+  "new_BAF_learning_rate_training_executed": false,
+  "test_evaluation_executed": false,
+  "candidate_plan": {
+    "total_seed42_candidates": 18,
+    "reused_baselines": 6,
+    "new_candidate_jobs": 12
+  }
+}
