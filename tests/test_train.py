@@ -70,6 +70,60 @@ def test_resume_matches_continuous_training_and_restores_best_checkpoint(b0_conf
         train_b0(changed, tmp_path / "changed", smoke=True, resume=checkpoint)
 
 
+def test_ft_transformer_training_resume_and_frozen_model_match(b0_config, tmp_path, monkeypatch):
+    from baf.evaluation import load_frozen_model, predict_logits
+
+    b0_config["model"] = {
+        "architecture": "ft_transformer", "d_token": 8, "n_heads": 2,
+        "num_blocks": 1, "ffn_hidden": 12, "dropout": 0.1, "residual_dropout": 0.0,
+    }
+    b0_config["training"].update(loss="weighted_bce", epochs=2)
+    original_load = np.load
+
+    def without_test(path, *args, **kwargs):
+        assert not Path(path).name.startswith("test_")
+        return original_load(path, *args, **kwargs)
+
+    monkeypatch.setattr(np, "load", without_test)
+    continuous = train.train_mlp(b0_config, tmp_path / "continuous-ft", smoke=True)
+    first = {**b0_config, "training": {**b0_config["training"], "epochs": 1}}
+    train.train_mlp(first, tmp_path / "first-ft", smoke=True)
+    checkpoint = tmp_path / "first-ft" / "last.pt"
+    resumed = train.train_mlp(b0_config, tmp_path / "resumed-ft", smoke=True, resume=checkpoint)
+    assert resumed["signature"]["experiment"] == "E5"
+    assert resumed["signature"]["architecture"] == "ft_transformer"
+    fraud = resumed["splits"]["train"]["fraud_count"]
+    assert resumed["signature"]["pos_weight"] == (40 - fraud) / fraud
+    for a, b in zip(continuous["history"], resumed["history"], strict=True):
+        for key in ("train_loss", "validation_loss", "validation_ap"):
+            assert a[key] == b[key]
+    expected = torch.load(tmp_path / "continuous-ft" / "last.pt", weights_only=True)
+    actual = torch.load(tmp_path / "resumed-ft" / "last.pt", weights_only=True)
+    for key, tensor in expected["model_state"].items():
+        torch.testing.assert_close(tensor, actual["model_state"][key], rtol=0, atol=0)
+
+    arrays, fingerprints = train.load_training_data(Path(b0_config["data"]["processed_dir"]))
+    frozen, state = load_frozen_model(tmp_path / "resumed-ft" / "best.pt", fingerprints, "cpu")
+    rows = train.select_rows(arrays["validation"][1], 20, 42)
+    logits = predict_logits(frozen, arrays["validation"][0][rows], 16, "cpu")
+    assert train.average_precision_score(arrays["validation"][1][rows], logits) == state["validation_ap"]
+    changed = {**b0_config, "model": {**b0_config["model"], "n_heads": 4}}
+    with pytest.raises(ValueError, match="configuration or data"):
+        train.train_mlp(changed, tmp_path / "changed-ft", smoke=True, resume=checkpoint)
+
+
+def test_e5_initial_training_conditions_match_e1():
+    from baf.cli import load_config
+
+    root = Path(__file__).resolve().parents[1]
+    e1, e5 = [load_config(root / "configs" / name) for name in ("e1.toml", "e5.toml")]
+    assert e1["data"] == e5["data"]
+    for key in ("loss", "seed", "epochs", "learning_rate", "weight_decay", "patience", "mixed_precision"):
+        assert e1["training"][key] == e5["training"][key]
+    assert "oversampling_ratio" not in e5["training"]
+    assert "batch_size" not in e5["training"]
+
+
 def test_ap_ties_keep_earliest_checkpoint_and_trigger_early_stopping(b0_config, tmp_path, monkeypatch):
     monkeypatch.setattr("baf.train.average_precision_score", lambda labels, scores: 0.5)
     b0_config["training"].update(epochs=6, patience=2)

@@ -13,6 +13,7 @@ from sklearn.metrics import average_precision_score
 from sklearn.model_selection import train_test_split
 
 from baf.cli import load_config, sha256_file, write_json
+from baf.ft_transformer import FTTransformer
 from baf.losses import BinaryFocalLoss
 from baf.models import BaselineMLP, ResidualMLP
 from baf.runtime import resolve_device
@@ -143,8 +144,14 @@ def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path 
         for name, value in architecture_args.items():
             if type(value) is not int or value < 1:
                 raise ValueError(f"model.{name} must be a positive integer")
+    elif architecture == "ft_transformer":
+        model_class = FTTransformer
+        architecture_args = {
+            name: model_config[name]
+            for name in ("d_token", "n_heads", "num_blocks", "ffn_hidden", "residual_dropout")
+        }
     else:
-        raise ValueError("model.architecture must be mlp or residual_mlp")
+        raise ValueError("model.architecture must be mlp, residual_mlp or ft_transformer")
     oversampling_ratio = training.get("oversampling_ratio")
     if oversampling_ratio is not None and (architecture != "mlp" or loss_name != "bce"):
         raise ValueError("Random oversampling requires the baseline MLP with BCE for E4")
@@ -203,6 +210,8 @@ def train_mlp(config: dict, run_dir: Path, *, smoke: bool = False, resume: Path 
         signature.update(experiment="E2", loss="BinaryFocalLoss", focal_gamma=training_loss_fn.gamma)
     if architecture == "residual_mlp":
         signature.update(experiment="E3", architecture=architecture)
+    elif architecture == "ft_transformer":
+        signature.update(experiment="E5", architecture=architecture)
     if oversampling_ratio is not None:
         signature.update(experiment="E4", oversampling_ratio=float(oversampling_ratio))
 
@@ -292,7 +301,7 @@ train_b0 = train_mlp
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Train an MLP on prepared BAF Train and Validation arrays")
+    parser = argparse.ArgumentParser(description="Train a PyTorch model on prepared BAF Train and Validation arrays")
     parser.add_argument("--config", type=Path, default=Path("configs/b0.toml"))
     parser.add_argument("--run-name", required=True)
     parser.add_argument("--batch-size", type=int)

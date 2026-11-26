@@ -16,6 +16,7 @@ from sklearn.metrics import average_precision_score, roc_auc_score
 
 from baf.cli import sha256_file, write_json
 from baf.models import BaselineMLP, ResidualMLP
+from baf.ft_transformer import FTTransformer
 from baf.runtime import resolve_device
 from baf.train import load_training_data
 
@@ -80,9 +81,10 @@ def load_frozen_model(checkpoint_path, fingerprints, device):
         raise ValueError(f"Checkpoint format or dataset mismatch: {checkpoint_path}")
     signature = state["signature"]
     architecture = signature.get("architecture", "mlp")
-    if architecture not in ("mlp", "residual_mlp"):
+    model_classes = {"mlp": BaselineMLP, "residual_mlp": ResidualMLP, "ft_transformer": FTTransformer}
+    if architecture not in model_classes:
         raise ValueError(f"Unsupported architecture: {architecture}")
-    model_class = ResidualMLP if architecture == "residual_mlp" else BaselineMLP
+    model_class = model_classes[architecture]
     model = model_class(**signature["model"]).to(device)
     model.load_state_dict(state["model_state"])
     model.eval()
