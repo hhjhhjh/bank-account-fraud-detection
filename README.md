@@ -204,6 +204,34 @@ baf-train --config configs/e3.toml --device cuda --batch-size 256 \
 
 [MLP 구조 비교 기록](results/reference/mlp-architecture-comparison/report.md)에서 E1·E3의 세 시드 Validation AP, 파라미터 수, 학교 GPU 학습 시간을 확인할 수 있습니다.
 
+E4는 같은 기본 MLP와 BCE에서 Train의 사기 행만 복원 추출해 추가합니다. `oversampling_ratio`는 샘플링 후 사기 건수/정상 건수 비율입니다. 예를 들어 0.1은 정상 10건당 사기 1건을 뜻하며, 전체에서 사기 비율은 약 9.09%가 됩니다. 필요한 사기 건수는 올림합니다. [RandomOverSampler의 비율 정의](https://imbalanced-learn.org/stable/references/generated/imblearn.over_sampling.RandomOverSampler.html)
+
+중복할 사기 행은 실험 시드로 고정하고 에포크마다 셔플합니다. 전처리 배열을 복제하지 않고 행 인덱스를 사용합니다. Validation에는 원래 분할을 적용합니다. `metrics.json`의 `splits`는 샘플링 전 건수이며, `training_work`는 샘플링 후 에포크당 표본 수·사기 건수·배치 수와 완료한 에포크의 누적 학습량을 기록합니다. `optimizer_steps`는 배치별 최적화 시도 횟수입니다.
+
+```bash
+baf-train --config configs/e4.toml --device cpu --smoke --batch-size 256 --epochs 2 --run-name local-e4-smoke-seed42
+baf-train --config configs/e4.toml --device cpu --smoke --batch-size 256 --epochs 3 \
+  --run-name local-e4-smoke-resumed-seed42 --resume checkpoints/e4/local-e4-smoke-seed42/last.pt
+```
+
+`configs/e4.toml`의 비율 0.1은 초기 확인용입니다. `--oversampling-ratio`로 바꿀 수 있으며, 최종 비율은 같은 학습 예산에서 Validation AP로 선택합니다. 오버샘플링으로 에포크당 학습량이 늘어나는 점을 비교표에 기록합니다. [로컬 실행 확인 기록](results/reference/oversampling-check.json)에는 작은 표본의 실행 결과와 전체 데이터에서 예상되는 학습량을 구분해 저장했습니다.
+
+## FT-Transformer 학습
+
+E5는 기존 전처리의 57개 입력을 각각 학습 가능한 벡터로 변환합니다. 각 열의 값에 열별 벡터를 곱하고 편향 벡터를 더해 토큰을 만들며, 분류용 CLS 토큰을 끝에 추가합니다. Attention으로 특성 사이의 관계를 학습한 뒤 CLS 토큰에서 사기 logit 하나를 출력합니다. [FT-Transformer 논문](https://arxiv.org/abs/2106.11959)과 [연구자 공개 구현](https://github.com/yandex-research/rtdl/blob/main/rtdl/modules.py)을 참고해 PyTorch로 구현했습니다.
+
+모든 모델에 같은 전처리 입력을 쓰기 위해 원핫 열과 이진형 열도 각각 수치 토큰으로 취급합니다. 원 논문의 범주형 임베딩과 하이퍼파라미터를 그대로 재현한 실험은 아닙니다. 토큰 너비·Attention head 수·블록 수·FFN 너비·dropout은 `configs/e5.toml`에서 설정합니다. 첫 Attention의 사전 정규화 생략, 이후 LayerNorm, ReGLU, CLS 출력 구조를 적용했습니다. 구현 범위와 차이는 [로컬 검증 기록](results/reference/ft-transformer-check.json)에 남겼습니다.
+
+현재 E1과 같은 Weighted BCE·AdamW·학습률·AP 선정·조기 종료 기준을 사용합니다. 작은 표본에서는 선택된 Train 행에서 클래스 가중치를 다시 계산합니다. 다음 명령은 CPU에서 Train 2,000건·Validation 1,000건으로 학습과 재개를 확인합니다.
+
+```bash
+baf-train --config configs/e5.toml --device cpu --smoke --batch-size 64 --epochs 1 --run-name local-e5-smoke-seed42
+baf-train --config configs/e5.toml --device cpu --smoke --batch-size 64 --epochs 2 \
+  --run-name local-e5-smoke-resumed-seed42 --resume checkpoints/e5/local-e5-smoke-seed42/last.pt
+```
+
+기존 실행 폴더가 있으면 다른 이름을 사용합니다. E5의 작은 모델 설정은 동작 확인용이며, 이 표본의 AP로 기존 모델보다 성능이 좋은지 판단하지 않습니다. 학교 GPU에서 같은 분할과 시드로 전체 학습을 진행하기 전에 배치 크기와 메모리 사용량을 확인합니다. 최종 설정은 Validation으로 선정하고 Test는 모든 실험 설정을 고정한 뒤 사용합니다.
+
 ## 연구 순서
 
 현재까지의 진행 상황과 후속 평가·XAI 계획은 [프로젝트 진행 기록](docs/project-status.md)에 정리했습니다.

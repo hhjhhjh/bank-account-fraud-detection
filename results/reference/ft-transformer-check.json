@@ -1,0 +1,131 @@
+{
+  "record_date": "2026-11-25",
+  "purpose": "local functionality check, not full-data model comparison",
+  "sources": [
+    "https://arxiv.org/abs/2106.11959",
+    "https://github.com/yandex-research/rtdl-revisiting-models",
+    "https://github.com/yandex-research/rtdl/blob/main/rtdl/modules.py"
+  ],
+  "implementation_scope": {
+    "inputs": "57 shared preprocessed scalar columns, including one-hot and binary columns",
+    "tokenizer": "independent affine numerical token per input column, plus appended CLS token",
+    "backbone": "pre-LayerNorm attention except first attention; ReGLU FFN; CLS LayerNorm/ReLU/linear logit head",
+    "differences": [
+      "No native categorical lookup embeddings; categorical one-hot columns are numerical tokens.",
+      "Compact architecture and shared E1 optimizer settings; not the paper hyperparameter configuration.",
+      "PyTorch MultiheadAttention instead of the authors attention module; no KV compression or CLS-only final-query optimization.",
+      "AdamW weight decay is applied to all parameters as in existing MLP training; no paper-specific parameter exemptions."
+    ]
+  },
+  "mode": "smoke",
+  "device": "cpu",
+  "torch_version": "2.15.0",
+  "signature": {
+    "experiment": "E5",
+    "model": {
+      "input_dim": 57,
+      "dropout": 0.1,
+      "d_token": 32,
+      "n_heads": 4,
+      "num_blocks": 2,
+      "ffn_hidden": 48,
+      "residual_dropout": 0.0
+    },
+    "loss": "BCEWithLogitsLoss",
+    "optimizer": "AdamW",
+    "seed": 42,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "patience": 5,
+    "mixed_precision": "off",
+    "mode": "smoke",
+    "rows": {
+      "train": 2000,
+      "validation": 1000
+    },
+    "data": {
+      "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+      "files_sha256": {
+        "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+        "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+        "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+        "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+        "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+      }
+    },
+    "pos_weight": 94.23809523809524,
+    "architecture": "ft_transformer"
+  },
+  "requested_epochs": 2,
+  "stop_reason": "epoch_limit",
+  "resumed_from": "checkpoints/e5/local-e5-smoke-seed42/last.pt",
+  "best_epoch": 2,
+  "best_validation_ap": 0.02273308988194378,
+  "total_epoch_seconds": 1.4328852490034478,
+  "trainable_parameters": 21889,
+  "training_work": {
+    "original_train_rows": 2000,
+    "rows_per_epoch": 2000,
+    "fraud_presentations_per_epoch": 21,
+    "normal_presentations_per_epoch": 1979,
+    "actual_fraud_to_normal_ratio": 0.010611419909044972,
+    "optimizer_steps_per_epoch": 32,
+    "total_training_rows": 4000,
+    "total_optimizer_steps": 64
+  },
+  "splits": {
+    "train": {
+      "rows": 2000,
+      "fraud_count": 21
+    },
+    "validation": {
+      "rows": 1000,
+      "fraud_count": 13
+    }
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.4000545296669007,
+      "validation_loss": 0.6557281765937805,
+      "validation_ap": 0.017435449579313374,
+      "seconds": 0.7248455830012972,
+      "device": "cpu",
+      "training_rows": 2000,
+      "fraud_presentations": 21,
+      "optimizer_steps": 32
+    },
+    {
+      "epoch": 2,
+      "train_loss": 1.3804917140007018,
+      "validation_loss": 0.6081737518310547,
+      "validation_ap": 0.02273308988194378,
+      "seconds": 0.7080396660021506,
+      "device": "cpu",
+      "training_rows": 2000,
+      "fraud_presentations": 21,
+      "optimizer_steps": 32
+    }
+  ],
+  "completed_epochs_before_resume": 1,
+  "completed_epochs_after_resume": 2,
+  "verification": {
+    "reloaded_validation_ap": 0.02273308988194378,
+    "finite_input_gradients": true,
+    "arrays_opened_during_reload_check": [
+      "train_X.npy",
+      "train_y.npy",
+      "validation_X.npy",
+      "validation_y.npy"
+    ],
+    "test_arrays_opened": false,
+    "test_access_guard": "Guarded np.load during reload; training/resume guarded in test_ft_transformer_training_resume_and_frozen_model_match.",
+    "cpu_exact_resume_test": "Passed on synthetic fixture, including optimizer state and dropout trajectory via epoch-derived seeds."
+  },
+  "commands": [
+    "OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 PYTHONPATH=src .venv/bin/python -m baf.train --config configs/e5.toml --device cpu --smoke --batch-size 64 --epochs 1 --run-name local-e5-smoke-seed42",
+    "OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 PYTHONPATH=src .venv/bin/python -m baf.train --config configs/e5.toml --device cpu --smoke --batch-size 64 --epochs 2 --run-name local-e5-smoke-resumed-seed42 --resume checkpoints/e5/local-e5-smoke-seed42/last.pt"
+  ],
+  "limitations": "Only 21 Train and 13 Validation fraud examples; two CPU epochs check functionality, not final accuracy. No CUDA/MPS training or full-data E5 training was run."
+}
