@@ -1,0 +1,30 @@
+[data]
+processed_dir = "data/processed/full"
+
+[model]
+architecture = "ft_transformer"
+# Initial compact architecture, not selected by a full-data search.
+d_token = 32
+n_heads = 4
+num_blocks = 2
+ffn_hidden = 48
+dropout = 0.1
+residual_dropout = 0.0
+
+[runtime]
+device = "auto"
+
+[training]
+loss = "weighted_bce"
+seed = 42
+epochs = 20
+learning_rate = 0.001
+weight_decay = 0.0001
+patience = 5
+mixed_precision = "off"
+checkpoint_dir = "checkpoints/e5"
+# Pass --batch-size after choosing a device.
+
+[smoke]
+train_rows = 2000
+validation_rows = 1000

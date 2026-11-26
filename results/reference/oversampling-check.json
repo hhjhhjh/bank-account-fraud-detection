@@ -1,0 +1,140 @@
+{
+  "record_date": "2026-11-25",
+  "purpose": "local functionality check before school GPU experiments",
+  "device": "cpu",
+  "torch_version": "2.15.0",
+  "data": {
+    "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+    "files_sha256": {
+      "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+      "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+      "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+      "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+      "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+    }
+  },
+  "signature": {
+    "experiment": "E4",
+    "model": {
+      "input_dim": 57,
+      "dropout": 0.1,
+      "hidden_dims": [
+        128,
+        64
+      ]
+    },
+    "loss": "BCEWithLogitsLoss",
+    "optimizer": "AdamW",
+    "seed": 42,
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "patience": 5,
+    "mixed_precision": "off",
+    "mode": "smoke",
+    "rows": {
+      "train": 20000,
+      "validation": 10000
+    },
+    "data": {
+      "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+      "files_sha256": {
+        "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+        "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+        "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+        "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+        "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+      }
+    },
+    "oversampling_ratio": 0.1
+  },
+  "splits": {
+    "train": {
+      "rows": 20000,
+      "fraud_count": 205
+    },
+    "validation": {
+      "rows": 10000,
+      "fraud_count": 134
+    }
+  },
+  "training_work": {
+    "original_train_rows": 20000,
+    "rows_per_epoch": 21775,
+    "fraud_presentations_per_epoch": 1980,
+    "normal_presentations_per_epoch": 19795,
+    "actual_fraud_to_normal_ratio": 0.10002525890376357,
+    "optimizer_steps_per_epoch": 86,
+    "total_training_rows": 65325,
+    "total_optimizer_steps": 258
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.3287698535872655,
+      "validation_loss": 0.08351795222759247,
+      "validation_ap": 0.11375027774534703,
+      "seconds": 0.06701179199990293,
+      "device": "cpu",
+      "training_rows": 21775,
+      "fraud_presentations": 1980,
+      "optimizer_steps": 86
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.21130148161839946,
+      "validation_loss": 0.0737329209625721,
+      "validation_ap": 0.11270539405963356,
+      "seconds": 0.05316595899967069,
+      "device": "cpu",
+      "training_rows": 21775,
+      "fraud_presentations": 1980,
+      "optimizer_steps": 86
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.1808823674412532,
+      "validation_loss": 0.08717597316503525,
+      "validation_ap": 0.08860515413708969,
+      "seconds": 0.06137341700014076,
+      "device": "cpu",
+      "training_rows": 21775,
+      "fraud_presentations": 1980,
+      "optimizer_steps": 86
+    }
+  ],
+  "best_validation_ap": 0.11375027774534703,
+  "best_epoch": 1,
+  "completed_epochs_before_resume": 2,
+  "completed_epochs_after_resume": 3,
+  "full_data_work_projections": {
+    "training_executed": false,
+    "batch_size": 256,
+    "candidates": [
+      {
+        "fraud_to_normal_ratio": 0.1,
+        "rows_per_epoch": 865522,
+        "fraud_presentations_per_epoch": 78684,
+        "optimizer_step_attempts_per_epoch": 3381
+      },
+      {
+        "fraud_to_normal_ratio": 0.25,
+        "rows_per_epoch": 983548,
+        "fraud_presentations_per_epoch": 196710,
+        "optimizer_step_attempts_per_epoch": 3842
+      },
+      {
+        "fraud_to_normal_ratio": 0.5,
+        "rows_per_epoch": 1180257,
+        "fraud_presentations_per_epoch": 393419,
+        "optimizer_step_attempts_per_epoch": 4611
+      },
+      {
+        "fraud_to_normal_ratio": 1.0,
+        "rows_per_epoch": 1573676,
+        "fraud_presentations_per_epoch": 786838,
+        "optimizer_step_attempts_per_epoch": 6148
+      }
+    ]
+  }
+}
