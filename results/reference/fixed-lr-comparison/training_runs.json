@@ -1,0 +1,4110 @@
+{
+  "protocol_sha256": "02f1c4197c1e47f4369051fe2be9cd8b88554a592110c594664856533149f87e",
+  "verification_code_sha256": {
+    "train.py": "98bf48a19cd1b1aa10786bf7f06c4c1444e2a22800b910c6faecdb07e5cf2eaf",
+    "models.py": "66590aa896e128fbaa814c3d73e04cce93199dd1943b1d1f5fd5a5ee521cfd18",
+    "losses.py": "fa177ac573f429d051106a9956be8b422389050232d0bf02759dde8eff7fa39d",
+    "sampling.py": "48e1eb0f33fe8ee7564bc97d8a5181ef611fd3bfe82bc89c387aa1d691cf3b06",
+    "ft_transformer.py": "66c2ab8d4f63cb3ce3809ce677bffa2e6af5240f13447e36a287145f26a7217b",
+    "lr_search.py": "d78e60e414f0de5009730513363e138e9b756ab0330e34c6239c955f974a8910",
+    "evaluation.py": "5a4a03cd3444db57a8922233b14825c1a6e34c7b50e266301319e8de009129ea",
+    "cli.py": "06f11c16c31669a3a2c46bf6c3b5f644e36e3121c8153c496545e6434da1116c"
+  },
+  "runs": [
+    {
+      "model": "b0",
+      "learning_rate": 0.001,
+      "seed": 42,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/b0/school-b0-seed42",
+      "signature": {
+        "experiment": "B0",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "hidden_dims": [
+            128,
+            64
+          ]
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 42,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        }
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "B0",
+          "model": {
+            "input_dim": 57,
+            "hidden_dims": [
+              128,
+              64
+            ],
+            "dropout": 0.1
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 42,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          }
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 7,
+        "best_validation_ap": 0.1680496473474849,
+        "total_epoch_seconds": 58.961447805399075,
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.0488920177150999,
+            "validation_loss": 0.05494482314923434,
+            "validation_ap": 0.15132607520831187,
+            "seconds": 5.244703732896596,
+            "device": "cuda"
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.044413437755999055,
+            "validation_loss": 0.054149662529037565,
+            "validation_ap": 0.15968134984698554,
+            "seconds": 4.997195552801713,
+            "device": "cuda"
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.044096293356968755,
+            "validation_loss": 0.05782212253152182,
+            "validation_ap": 0.16493705606789602,
+            "seconds": 4.930543166119605,
+            "device": "cuda"
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.0437516113318415,
+            "validation_loss": 0.05400695065327777,
+            "validation_ap": 0.16417321706984775,
+            "seconds": 4.083647393854335,
+            "device": "cuda"
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.04343900197946964,
+            "validation_loss": 0.054028062730538284,
+            "validation_ap": 0.16314962155509466,
+            "seconds": 4.709546754136682,
+            "device": "cuda"
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.04330340651877471,
+            "validation_loss": 0.05360803103050875,
+            "validation_ap": 0.16701497638276583,
+            "seconds": 4.978438877966255,
+            "device": "cuda"
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.04306953935956601,
+            "validation_loss": 0.054245263422122235,
+            "validation_ap": 0.1680496473474849,
+            "seconds": 5.00155163789168,
+            "device": "cuda"
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.04299464058895706,
+            "validation_loss": 0.05417936990349861,
+            "validation_ap": 0.16221626861588467,
+            "seconds": 5.007743138819933,
+            "device": "cuda"
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.04281784472944613,
+            "validation_loss": 0.05461701777453086,
+            "validation_ap": 0.1637855440451793,
+            "seconds": 4.996237591840327,
+            "device": "cuda"
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.042671312368811734,
+            "validation_loss": 0.05596160474952778,
+            "validation_ap": 0.16301892013545938,
+            "seconds": 5.033253076951951,
+            "device": "cuda"
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.04256263570244187,
+            "validation_loss": 0.05507651025249041,
+            "validation_ap": 0.16804735924765687,
+            "seconds": 5.03428606595844,
+            "device": "cuda"
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.04241177266111316,
+            "validation_loss": 0.05466265698292712,
+            "validation_ap": 0.16300229781696474,
+            "seconds": 4.944300816161558,
+            "device": "cuda"
+          }
+        ]
+      },
+      "trainable_parameters": 15745,
+      "files_sha256": {
+        "metrics.json": "175ddd3be4fabdfc8c68bd3dad436da9d24fbf9e33f57b1d49c78b70077d6d80",
+        "best.pt": "003bebf05b270c077c71c89913882db07a8e6bc451760b709d878c8ef46b595a",
+        "last.pt": "187feb8d3732ba9100537c718116abbe7244b4a3e02463a468a6349b67d5e38b"
+      }
+    },
+    {
+      "model": "b0",
+      "learning_rate": 0.001,
+      "seed": 43,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/b0/school-b0-seed43",
+      "signature": {
+        "experiment": "B0",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "hidden_dims": [
+            128,
+            64
+          ]
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 43,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        }
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "B0",
+          "model": {
+            "input_dim": 57,
+            "hidden_dims": [
+              128,
+              64
+            ],
+            "dropout": 0.1
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 43,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          }
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 11,
+        "best_validation_ap": 0.16907020457780642,
+        "total_epoch_seconds": 58.13349514780566,
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.04861540149662181,
+            "validation_loss": 0.05449572389039069,
+            "validation_ap": 0.1559677793149665,
+            "seconds": 3.976463299943134,
+            "device": "cuda"
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.04445297168155254,
+            "validation_loss": 0.05860461851612376,
+            "validation_ap": 0.15971769469477673,
+            "seconds": 3.6150922370143235,
+            "device": "cuda"
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.04399624033271889,
+            "validation_loss": 0.05405877842379475,
+            "validation_ap": 0.1631261702021728,
+            "seconds": 3.6183490101248026,
+            "device": "cuda"
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.043666909922233675,
+            "validation_loss": 0.05406824501986097,
+            "validation_ap": 0.16113307624874354,
+            "seconds": 3.623048607027158,
+            "device": "cuda"
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.04346918535696694,
+            "validation_loss": 0.05373438203053118,
+            "validation_ap": 0.16411555970999156,
+            "seconds": 3.622210839064792,
+            "device": "cuda"
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.04321953472714561,
+            "validation_loss": 0.05441163789827252,
+            "validation_ap": 0.1620576383499385,
+            "seconds": 3.6213783060666174,
+            "device": "cuda"
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.04310357642888195,
+            "validation_loss": 0.054004389228418145,
+            "validation_ap": 0.16220563705176183,
+            "seconds": 3.6142248320393264,
+            "device": "cuda"
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.04295734399545147,
+            "validation_loss": 0.05443481039692555,
+            "validation_ap": 0.16559900175819314,
+            "seconds": 3.619966016849503,
+            "device": "cuda"
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.042841622922428046,
+            "validation_loss": 0.05604053375762151,
+            "validation_ap": 0.16601975063535435,
+            "seconds": 3.5861892960965633,
+            "device": "cuda"
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.04262395138103998,
+            "validation_loss": 0.05505173550953827,
+            "validation_ap": 0.16887133269118082,
+            "seconds": 3.6079179090447724,
+            "device": "cuda"
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.042568621005487375,
+            "validation_loss": 0.054604901139581094,
+            "validation_ap": 0.16907020457780642,
+            "seconds": 3.619698196882382,
+            "device": "cuda"
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.04242396989989936,
+            "validation_loss": 0.05381545171810584,
+            "validation_ap": 0.16503777365239825,
+            "seconds": 3.5997377918101847,
+            "device": "cuda"
+          },
+          {
+            "epoch": 13,
+            "train_loss": 0.04223328305646778,
+            "validation_loss": 0.053817779894773,
+            "validation_ap": 0.16706009209266612,
+            "seconds": 3.5861907189246267,
+            "device": "cuda"
+          },
+          {
+            "epoch": 14,
+            "train_loss": 0.04219965963660571,
+            "validation_loss": 0.05448376269215231,
+            "validation_ap": 0.16773823297328036,
+            "seconds": 3.6023303819820285,
+            "device": "cuda"
+          },
+          {
+            "epoch": 15,
+            "train_loss": 0.042070211760124585,
+            "validation_loss": 0.05524798472324522,
+            "validation_ap": 0.16641541280530495,
+            "seconds": 3.602913283975795,
+            "device": "cuda"
+          },
+          {
+            "epoch": 16,
+            "train_loss": 0.04183249505242712,
+            "validation_loss": 0.054210809040912446,
+            "validation_ap": 0.16261961566577243,
+            "seconds": 3.6177844209596515,
+            "device": "cuda"
+          }
+        ]
+      },
+      "trainable_parameters": 15745,
+      "files_sha256": {
+        "metrics.json": "6e72a24229e9ae54cfdc131f641ea53ae340b282036eda516e6bc1e48debe4b9",
+        "best.pt": "f29bd4b44ccdff656d33aa889db5dea09a0ea09efe98c8f1e123b9623ed139b8",
+        "last.pt": "51b5421e551bff41b3b995024d32882b1cee29a6e13a3fe0d152437ee7e2b257"
+      }
+    },
+    {
+      "model": "b0",
+      "learning_rate": 0.001,
+      "seed": 44,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/b0/school-b0-seed44",
+      "signature": {
+        "experiment": "B0",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "hidden_dims": [
+            128,
+            64
+          ]
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 44,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        }
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "B0",
+          "model": {
+            "input_dim": 57,
+            "hidden_dims": [
+              128,
+              64
+            ],
+            "dropout": 0.1
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 44,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          }
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 14,
+        "best_validation_ap": 0.16832258091730104,
+        "total_epoch_seconds": 95.49168094294146,
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.04850110436672422,
+            "validation_loss": 0.05918751835380025,
+            "validation_ap": 0.15233570855188255,
+            "seconds": 5.240975495893508,
+            "device": "cuda"
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.04433556762230578,
+            "validation_loss": 0.05414063036722832,
+            "validation_ap": 0.16057956406017676,
+            "seconds": 5.036444308003411,
+            "device": "cuda"
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.04392817555693713,
+            "validation_loss": 0.054142670183944044,
+            "validation_ap": 0.16061548853504365,
+            "seconds": 5.038584201829508,
+            "device": "cuda"
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.04363195845342891,
+            "validation_loss": 0.053626114232127424,
+            "validation_ap": 0.16672733810058368,
+            "seconds": 5.03724167495966,
+            "device": "cuda"
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.043389794941614,
+            "validation_loss": 0.054485634785118246,
+            "validation_ap": 0.16673067048467655,
+            "seconds": 5.0065250031184405,
+            "device": "cuda"
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.04325171003667144,
+            "validation_loss": 0.05397872585756708,
+            "validation_ap": 0.16523414222422425,
+            "seconds": 4.999445674009621,
+            "device": "cuda"
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.043036925582907205,
+            "validation_loss": 0.05454904385278603,
+            "validation_ap": 0.16546960887280948,
+            "seconds": 5.039722847985104,
+            "device": "cuda"
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.04292353700688531,
+            "validation_loss": 0.05580866824821487,
+            "validation_ap": 0.16696973340588311,
+            "seconds": 4.995225653983653,
+            "device": "cuda"
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.04279552477689643,
+            "validation_loss": 0.05507619129534472,
+            "validation_ap": 0.16744412985643867,
+            "seconds": 5.01700658001937,
+            "device": "cuda"
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.04263570848198282,
+            "validation_loss": 0.05431579119994852,
+            "validation_ap": 0.16627049318922268,
+            "seconds": 5.01364775095135,
+            "device": "cuda"
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.04246749944245646,
+            "validation_loss": 0.05389503925205573,
+            "validation_ap": 0.164652415828969,
+            "seconds": 5.054208545945585,
+            "device": "cuda"
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.042300146835960416,
+            "validation_loss": 0.05405518932135912,
+            "validation_ap": 0.16818824718639608,
+            "seconds": 4.68793175695464,
+            "device": "cuda"
+          },
+          {
+            "epoch": 13,
+            "train_loss": 0.04218621562371795,
+            "validation_loss": 0.054551553655057324,
+            "validation_ap": 0.16175747610541144,
+            "seconds": 5.067207918968052,
+            "device": "cuda"
+          },
+          {
+            "epoch": 14,
+            "train_loss": 0.04209176544320638,
+            "validation_loss": 0.05568196414324114,
+            "validation_ap": 0.16832258091730104,
+            "seconds": 5.067612936953083,
+            "device": "cuda"
+          },
+          {
+            "epoch": 15,
+            "train_loss": 0.041938166106638336,
+            "validation_loss": 0.05407376420178513,
+            "validation_ap": 0.1654793362794233,
+            "seconds": 5.066732453880832,
+            "device": "cuda"
+          },
+          {
+            "epoch": 16,
+            "train_loss": 0.04185474293338829,
+            "validation_loss": 0.054987448283412135,
+            "validation_ap": 0.16556419450275484,
+            "seconds": 5.039800878847018,
+            "device": "cuda"
+          },
+          {
+            "epoch": 17,
+            "train_loss": 0.041721348928597225,
+            "validation_loss": 0.05427918474793117,
+            "validation_ap": 0.16241126475335807,
+            "seconds": 5.015842096880078,
+            "device": "cuda"
+          },
+          {
+            "epoch": 18,
+            "train_loss": 0.041638902527617115,
+            "validation_loss": 0.05444034928340644,
+            "validation_ap": 0.1599125770002176,
+            "seconds": 5.038762448821217,
+            "device": "cuda"
+          },
+          {
+            "epoch": 19,
+            "train_loss": 0.04156566817526171,
+            "validation_loss": 0.054452235415984554,
+            "validation_ap": 0.15552668611512926,
+            "seconds": 5.028762714937329,
+            "device": "cuda"
+          }
+        ]
+      },
+      "trainable_parameters": 15745,
+      "files_sha256": {
+        "metrics.json": "d0f366330c18eb71c13f0e08b1a59ebdaa5ad0c6106fc58a4dbb32db523c9fe0",
+        "best.pt": "c4deb50b94409c518790d08c0129c81ed0801af19b304872063d37e96c302931",
+        "last.pt": "1ac70e2c4e40d0913194ad9f9d9260198a18ffbe4195a2158cfa717395737f5a"
+      }
+    },
+    {
+      "model": "e1",
+      "learning_rate": 0.001,
+      "seed": 42,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e1/school-e1-seed42",
+      "signature": {
+        "experiment": "E1",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "hidden_dims": [
+            128,
+            64
+          ]
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 42,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "pos_weight": 96.53269537480064
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E1",
+          "model": {
+            "input_dim": 57,
+            "hidden_dims": [
+              128,
+              64
+            ],
+            "dropout": 0.1
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 42,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "pos_weight": 96.53269537480064
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 8,
+        "best_validation_ap": 0.1706189800980139,
+        "total_epoch_seconds": 53.08007883327082,
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.8847690023362476,
+            "validation_loss": 0.4887287409054652,
+            "validation_ap": 0.15862609222316268,
+            "seconds": 4.956625057151541,
+            "device": "cuda"
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.8446854619032864,
+            "validation_loss": 0.4907141303920894,
+            "validation_ap": 0.16578670153044267,
+            "seconds": 3.779764673905447,
+            "device": "cuda"
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.832486848326703,
+            "validation_loss": 0.36505402166253936,
+            "validation_ap": 0.16873180470415297,
+            "seconds": 3.7777060221415013,
+            "device": "cuda"
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.8236257727371384,
+            "validation_loss": 0.48697264237160887,
+            "validation_ap": 0.16486311381186688,
+            "seconds": 3.759463169146329,
+            "device": "cuda"
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.8142192817010868,
+            "validation_loss": 0.48744179159083245,
+            "validation_ap": 0.16845000780900563,
+            "seconds": 3.796783506171778,
+            "device": "cuda"
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.8059510377382408,
+            "validation_loss": 0.4175609459905051,
+            "validation_ap": 0.16608017833704422,
+            "seconds": 3.758791781961918,
+            "device": "cuda"
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.7951279728093029,
+            "validation_loss": 0.48776516776343753,
+            "validation_ap": 0.16865855417607975,
+            "seconds": 3.753023359924555,
+            "device": "cuda"
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.7855356533203219,
+            "validation_loss": 0.3890153569927777,
+            "validation_ap": 0.1706189800980139,
+            "seconds": 5.125238958047703,
+            "device": "cuda"
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.7778590429785864,
+            "validation_loss": 0.4736919147240394,
+            "validation_ap": 0.16557842944538972,
+            "seconds": 5.2672983759548515,
+            "device": "cuda"
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.7710000042082134,
+            "validation_loss": 0.3685635850985157,
+            "validation_ap": 0.17058039420734308,
+            "seconds": 3.8064645070116967,
+            "device": "cuda"
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.7627275102561432,
+            "validation_loss": 0.4174938875096021,
+            "validation_ap": 0.16438431770419065,
+            "seconds": 3.7633298428263515,
+            "device": "cuda"
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.7546693558065172,
+            "validation_loss": 0.42464899639213644,
+            "validation_ap": 0.16722097427208396,
+            "seconds": 3.7895407089963555,
+            "device": "cuda"
+          },
+          {
+            "epoch": 13,
+            "train_loss": 0.7488800379234063,
+            "validation_loss": 0.4861973260499239,
+            "validation_ap": 0.16804372199450193,
+            "seconds": 3.7460488700307906,
+            "device": "cuda"
+          }
+        ]
+      },
+      "trainable_parameters": 15745,
+      "files_sha256": {
+        "metrics.json": "e4a0cf7fafea5fc88d80b612292c56deee4b432429d96b5aac1201dfbea58f6a",
+        "best.pt": "f21520a9ca91709ae9acbc57a60346ea816df1f5a1beb2cb4b2da419d54b0d6c",
+        "last.pt": "68076dae78e0de29bf5fe064000a9a7155eb6896d4d1f72695d5e9727271e84d"
+      }
+    },
+    {
+      "model": "e1",
+      "learning_rate": 0.001,
+      "seed": 43,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e1/school-e1-seed43",
+      "signature": {
+        "experiment": "E1",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "hidden_dims": [
+            128,
+            64
+          ]
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 43,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "pos_weight": 96.53269537480064
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E1",
+          "model": {
+            "input_dim": 57,
+            "hidden_dims": [
+              128,
+              64
+            ],
+            "dropout": 0.1
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 43,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "pos_weight": 96.53269537480064
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 7,
+        "best_validation_ap": 0.1733643730466581,
+        "total_epoch_seconds": 57.5675865446683,
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.8853358624474781,
+            "validation_loss": 0.5122620689120397,
+            "validation_ap": 0.16008499111155092,
+            "seconds": 5.585961402161047,
+            "device": "cuda"
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.8458659484048653,
+            "validation_loss": 0.3699286869600956,
+            "validation_ap": 0.1604968619142034,
+            "seconds": 5.33832105784677,
+            "device": "cuda"
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.8346607727668409,
+            "validation_loss": 0.5093002287243502,
+            "validation_ap": 0.16159140358250726,
+            "seconds": 5.360292423050851,
+            "device": "cuda"
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.8228358546566684,
+            "validation_loss": 0.4961718602250485,
+            "validation_ap": 0.16478407936680922,
+            "seconds": 5.349752286914736,
+            "device": "cuda"
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.8155128640031044,
+            "validation_loss": 0.4413345451494635,
+            "validation_ap": 0.16323896091569884,
+            "seconds": 5.30191019596532,
+            "device": "cuda"
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.8025972982547247,
+            "validation_loss": 0.4722418039276723,
+            "validation_ap": 0.1685088560543952,
+            "seconds": 5.325016683898866,
+            "device": "cuda"
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.7957220723935591,
+            "validation_loss": 0.3831249842205729,
+            "validation_ap": 0.1733643730466581,
+            "seconds": 5.337729714112356,
+            "device": "cuda"
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.7883978590357172,
+            "validation_loss": 0.4480938237673185,
+            "validation_ap": 0.16773606361197496,
+            "seconds": 4.688211901811883,
+            "device": "cuda"
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.78299177634163,
+            "validation_loss": 0.366490089968723,
+            "validation_ap": 0.17072903793839564,
+            "seconds": 3.8177877760026604,
+            "device": "cuda"
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.7720768611350859,
+            "validation_loss": 0.40565587811309217,
+            "validation_ap": 0.17014586713071014,
+            "seconds": 3.8047392750158906,
+            "device": "cuda"
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.7674834474919596,
+            "validation_loss": 0.42429932326609615,
+            "validation_ap": 0.1680823191038155,
+            "seconds": 3.8078229499515146,
+            "device": "cuda"
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.7575512441735148,
+            "validation_loss": 0.45728119142300083,
+            "validation_ap": 0.16984618968326765,
+            "seconds": 3.850040877936408,
+            "device": "cuda"
+          }
+        ]
+      },
+      "trainable_parameters": 15745,
+      "files_sha256": {
+        "metrics.json": "5d2f0558c067d8f4bb424383c5a7f80b88ca651a7e7cf860bc09d7d6d84e60bf",
+        "best.pt": "86de400323938ae3ce4a1abd0d266f428b41fd21850d78f72d96958c3d249b61",
+        "last.pt": "ef28986f1c005768ff440837b42b3a514a620efe646fd669ad51b5e97452912a"
+      }
+    },
+    {
+      "model": "e1",
+      "learning_rate": 0.001,
+      "seed": 44,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e1/school-e1-seed44",
+      "signature": {
+        "experiment": "E1",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "hidden_dims": [
+            128,
+            64
+          ]
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 44,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "pos_weight": 96.53269537480064
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E1",
+          "model": {
+            "input_dim": 57,
+            "hidden_dims": [
+              128,
+              64
+            ],
+            "dropout": 0.1
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 44,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "pos_weight": 96.53269537480064
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 6,
+        "best_validation_ap": 0.16999142266518769,
+        "total_epoch_seconds": 41.99111148249358,
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.8863119679156429,
+            "validation_loss": 0.3461260119756557,
+            "validation_ap": 0.1590821130363549,
+            "seconds": 4.226363896857947,
+            "device": "cuda"
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.8449515864168341,
+            "validation_loss": 0.47365680373981944,
+            "validation_ap": 0.15805833475223466,
+            "seconds": 3.7824740309733897,
+            "device": "cuda"
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.8335212689761525,
+            "validation_loss": 0.49184936633054327,
+            "validation_ap": 0.16376464142215916,
+            "seconds": 3.774559033103287,
+            "device": "cuda"
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.8248096724775883,
+            "validation_loss": 0.42897667502009756,
+            "validation_ap": 0.16337800763596014,
+            "seconds": 3.802151459036395,
+            "device": "cuda"
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.8106068101613774,
+            "validation_loss": 0.48375151720054754,
+            "validation_ap": 0.1684852539957257,
+            "seconds": 3.7657149229198694,
+            "device": "cuda"
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.8039097754315322,
+            "validation_loss": 0.3838147279267727,
+            "validation_ap": 0.16999142266518769,
+            "seconds": 3.7673546301666647,
+            "device": "cuda"
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.7967088999794972,
+            "validation_loss": 0.4590308382334631,
+            "validation_ap": 0.1659436594514848,
+            "seconds": 3.7623894561547786,
+            "device": "cuda"
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.7870063320157649,
+            "validation_loss": 0.39182032001246875,
+            "validation_ap": 0.16935230744875654,
+            "seconds": 3.7715306009631604,
+            "device": "cuda"
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.7799392879668205,
+            "validation_loss": 0.42151465588804093,
+            "validation_ap": 0.1643560580274801,
+            "seconds": 3.773752339184284,
+            "device": "cuda"
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.7698733933708087,
+            "validation_loss": 0.4288912637903267,
+            "validation_ap": 0.16644513635055433,
+            "seconds": 3.7610252171289176,
+            "device": "cuda"
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.765293298699176,
+            "validation_loss": 0.47333722002239464,
+            "validation_ap": 0.1696827613904921,
+            "seconds": 3.8037958960048854,
+            "device": "cuda"
+          }
+        ]
+      },
+      "trainable_parameters": 15745,
+      "files_sha256": {
+        "metrics.json": "c28805cd426292b42c38173eb7eaa514c896d50792c617b32d4617c86abb5ac0",
+        "best.pt": "f1d58c7bee14aa5187581b36a0976d1bb039ee9efaaf1a5f202bf4227b72ba18",
+        "last.pt": "84fdf8ab5df49ddd248abb28d5ab678022ac254df2c392147559e240c753282a"
+      }
+    },
+    {
+      "model": "e2",
+      "learning_rate": 0.001,
+      "seed": 42,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e2/school-e2-gamma0.5-seed42",
+      "signature": {
+        "experiment": "E2",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "hidden_dims": [
+            128,
+            64
+          ]
+        },
+        "loss": "BinaryFocalLoss",
+        "optimizer": "AdamW",
+        "seed": 42,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "focal_gamma": 0.5
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E2",
+          "model": {
+            "input_dim": 57,
+            "hidden_dims": [
+              128,
+              64
+            ],
+            "dropout": 0.1
+          },
+          "loss": "BinaryFocalLoss",
+          "optimizer": "AdamW",
+          "seed": 42,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "focal_gamma": 0.5
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 12,
+        "best_validation_ap": 0.1701155758213879,
+        "total_epoch_seconds": 80.279551923275,
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.03426473907550196,
+            "validation_loss": 0.07069359321683638,
+            "validation_ap": 0.15322903317579753,
+            "seconds": 6.672320851124823,
+            "device": "cuda"
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.031404316068159265,
+            "validation_loss": 0.06576245042771844,
+            "validation_ap": 0.16158444717450043,
+            "seconds": 5.882927160942927,
+            "device": "cuda"
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.03113688495811911,
+            "validation_loss": 0.05452620428035963,
+            "validation_ap": 0.16677018639407928,
+            "seconds": 5.851729264948517,
+            "device": "cuda"
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.03088576658572046,
+            "validation_loss": 0.06085644833918251,
+            "validation_ap": 0.16408127908130862,
+            "seconds": 6.167533492902294,
+            "device": "cuda"
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.03068454176811831,
+            "validation_loss": 0.06481926066630268,
+            "validation_ap": 0.16238339262004273,
+            "seconds": 6.3611732120625675,
+            "device": "cuda"
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.03058183911797113,
+            "validation_loss": 0.06151444550084826,
+            "validation_ap": 0.16781303938978578,
+            "seconds": 4.104271015152335,
+            "device": "cuda"
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.03041501906318532,
+            "validation_loss": 0.057872232636283216,
+            "validation_ap": 0.16919280051385258,
+            "seconds": 4.111344649922103,
+            "device": "cuda"
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.03035814033926751,
+            "validation_loss": 0.05929789246539288,
+            "validation_ap": 0.1641310212921931,
+            "seconds": 4.107408954994753,
+            "device": "cuda"
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.030252473308146673,
+            "validation_loss": 0.05765884819589117,
+            "validation_ap": 0.167330903200329,
+            "seconds": 4.136236135149375,
+            "device": "cuda"
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.030132067947992402,
+            "validation_loss": 0.055302507832076596,
+            "validation_ap": 0.16880688872996172,
+            "seconds": 4.092710433062166,
+            "device": "cuda"
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.030065626176469747,
+            "validation_loss": 0.05668607529201246,
+            "validation_ap": 0.16922163121722814,
+            "seconds": 4.091666827909648,
+            "device": "cuda"
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.02993799507175518,
+            "validation_loss": 0.05771535222184622,
+            "validation_ap": 0.1701155758213879,
+            "seconds": 4.096895908005536,
+            "device": "cuda"
+          },
+          {
+            "epoch": 13,
+            "train_loss": 0.029833324937911437,
+            "validation_loss": 0.06166620071621682,
+            "validation_ap": 0.16196132051545853,
+            "seconds": 4.130193418823183,
+            "device": "cuda"
+          },
+          {
+            "epoch": 14,
+            "train_loss": 0.029694175147324513,
+            "validation_loss": 0.06024991635118272,
+            "validation_ap": 0.16397187133037,
+            "seconds": 4.112153433030471,
+            "device": "cuda"
+          },
+          {
+            "epoch": 15,
+            "train_loss": 0.0296539580536492,
+            "validation_loss": 0.057347858658989066,
+            "validation_ap": 0.166605437121769,
+            "seconds": 4.124276016140357,
+            "device": "cuda"
+          },
+          {
+            "epoch": 16,
+            "train_loss": 0.02960028891154603,
+            "validation_loss": 0.056619284642702834,
+            "validation_ap": 0.16938129831637844,
+            "seconds": 4.1074566170573235,
+            "device": "cuda"
+          },
+          {
+            "epoch": 17,
+            "train_loss": 0.029477124844495894,
+            "validation_loss": 0.0607274536407917,
+            "validation_ap": 0.16081345268938493,
+            "seconds": 4.129254532046616,
+            "device": "cuda"
+          }
+        ]
+      },
+      "trainable_parameters": 15745,
+      "files_sha256": {
+        "metrics.json": "26d192f9ea462bd6cdf4e09f83b122cff9112a05e6cded2813ae9c8da665596b",
+        "best.pt": "85b1b5c1fd49a936aa9044e0296e1c1ae898d372572ebd61da3b52e995493608",
+        "last.pt": "5a8df7cbffdbaf135dffe9f9ee999435f65cffc3df6c9b525c84db2b50986eae"
+      }
+    },
+    {
+      "model": "e2",
+      "learning_rate": 0.001,
+      "seed": 43,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e2/school-e2-gamma0.5-seed43",
+      "signature": {
+        "experiment": "E2",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "hidden_dims": [
+            128,
+            64
+          ]
+        },
+        "loss": "BinaryFocalLoss",
+        "optimizer": "AdamW",
+        "seed": 43,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "focal_gamma": 0.5
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E2",
+          "model": {
+            "input_dim": 57,
+            "hidden_dims": [
+              128,
+              64
+            ],
+            "dropout": 0.1
+          },
+          "loss": "BinaryFocalLoss",
+          "optimizer": "AdamW",
+          "seed": 43,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "focal_gamma": 0.5
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 11,
+        "best_validation_ap": 0.1726946640133951,
+        "total_epoch_seconds": 94.06460537808016,
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.034080406644389695,
+            "validation_loss": 0.06657877478743876,
+            "validation_ap": 0.15708610661242986,
+            "seconds": 6.748242164961994,
+            "device": "cuda"
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.031407688714047394,
+            "validation_loss": 0.05451333237028485,
+            "validation_ap": 0.162054607870909,
+            "seconds": 5.958171983947977,
+            "device": "cuda"
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.031066802847011826,
+            "validation_loss": 0.06131869345180435,
+            "validation_ap": 0.16307993093514375,
+            "seconds": 6.220042133005336,
+            "device": "cuda"
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.03080443192064867,
+            "validation_loss": 0.06622724684318859,
+            "validation_ap": 0.16152467288591885,
+            "seconds": 7.287572524975985,
+            "device": "cuda"
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.030647612808992076,
+            "validation_loss": 0.062174571377313595,
+            "validation_ap": 0.16660329040552266,
+            "seconds": 5.894926754990593,
+            "device": "cuda"
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.030463216918185102,
+            "validation_loss": 0.05841014677256833,
+            "validation_ap": 0.16703945605154527,
+            "seconds": 5.932709456887096,
+            "device": "cuda"
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.030368839223897298,
+            "validation_loss": 0.05976883184709463,
+            "validation_ap": 0.16433843821523003,
+            "seconds": 6.981802158989012,
+            "device": "cuda"
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.03027770168798268,
+            "validation_loss": 0.05811058784384636,
+            "validation_ap": 0.1678964418352279,
+            "seconds": 5.955614926991984,
+            "device": "cuda"
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.030173247064316455,
+            "validation_loss": 0.055010234908004566,
+            "validation_ap": 0.16603902033963283,
+            "seconds": 5.945952085079625,
+            "device": "cuda"
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.03003244548359847,
+            "validation_loss": 0.05654675106481946,
+            "validation_ap": 0.16986037189034914,
+            "seconds": 6.553762145107612,
+            "device": "cuda"
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.029936151697401003,
+            "validation_loss": 0.05718457128029631,
+            "validation_ap": 0.1726946640133951,
+            "seconds": 5.919889711076394,
+            "device": "cuda"
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.029852831859707947,
+            "validation_loss": 0.061860915750626605,
+            "validation_ap": 0.16320692432445327,
+            "seconds": 5.91810249700211,
+            "device": "cuda"
+          },
+          {
+            "epoch": 13,
+            "train_loss": 0.029730953117746005,
+            "validation_loss": 0.059975681513620635,
+            "validation_ap": 0.172090530327132,
+            "seconds": 5.904270589118823,
+            "device": "cuda"
+          },
+          {
+            "epoch": 14,
+            "train_loss": 0.029691380358035094,
+            "validation_loss": 0.05833461547306097,
+            "validation_ap": 0.16481139951711324,
+            "seconds": 4.517932245042175,
+            "device": "cuda"
+          },
+          {
+            "epoch": 15,
+            "train_loss": 0.029643964442583753,
+            "validation_loss": 0.056082335948143984,
+            "validation_ap": 0.16919169483922486,
+            "seconds": 4.166382238967344,
+            "device": "cuda"
+          },
+          {
+            "epoch": 16,
+            "train_loss": 0.029478652291352134,
+            "validation_loss": 0.060658959797904845,
+            "validation_ap": 0.16454443081977338,
+            "seconds": 4.159231761936098,
+            "device": "cuda"
+          }
+        ]
+      },
+      "trainable_parameters": 15745,
+      "files_sha256": {
+        "metrics.json": "675a373e490952530813ac5094897e027e1898e90eb04288e684ffcad382ed2f",
+        "best.pt": "baf44c8c8072eefae2d726aca4bdb585abf2f1cac32683793d8d1abf374aa294",
+        "last.pt": "763ea92745acf7af89073009ebe36b96fbbc73d294250d2ef7f6c0a48a50f9fc"
+      }
+    },
+    {
+      "model": "e2",
+      "learning_rate": 0.001,
+      "seed": 44,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e2/school-e2-gamma0.5-seed44",
+      "signature": {
+        "experiment": "E2",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "hidden_dims": [
+            128,
+            64
+          ]
+        },
+        "loss": "BinaryFocalLoss",
+        "optimizer": "AdamW",
+        "seed": 44,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "focal_gamma": 0.5
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E2",
+          "model": {
+            "input_dim": 57,
+            "hidden_dims": [
+              128,
+              64
+            ],
+            "dropout": 0.1
+          },
+          "loss": "BinaryFocalLoss",
+          "optimizer": "AdamW",
+          "seed": 44,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "focal_gamma": 0.5
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 10,
+        "best_validation_ap": 0.1676136577421342,
+        "total_epoch_seconds": 70.25697773764841,
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.033990514412496405,
+            "validation_loss": 0.05500654581537191,
+            "validation_ap": 0.15569629405839816,
+            "seconds": 6.16118603409268,
+            "device": "cuda"
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.03134222408402057,
+            "validation_loss": 0.06219255456118337,
+            "validation_ap": 0.15957903922991656,
+            "seconds": 5.929363440955058,
+            "device": "cuda"
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.031049235426517975,
+            "validation_loss": 0.06507948161529266,
+            "validation_ap": 0.16044268793599648,
+            "seconds": 5.950213117990643,
+            "device": "cuda"
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.030837324535626515,
+            "validation_loss": 0.062369931486198495,
+            "validation_ap": 0.1661077719790793,
+            "seconds": 6.687201441964135,
+            "device": "cuda"
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.03065475830281181,
+            "validation_loss": 0.05765096568495253,
+            "validation_ap": 0.16740770097085042,
+            "seconds": 4.1546963029541075,
+            "device": "cuda"
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.0305165204124996,
+            "validation_loss": 0.059628573197188985,
+            "validation_ap": 0.16363074198985608,
+            "seconds": 4.156849568942562,
+            "device": "cuda"
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.030365927230935775,
+            "validation_loss": 0.0582300126249511,
+            "validation_ap": 0.16651441808849668,
+            "seconds": 4.156183833954856,
+            "device": "cuda"
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.030254680123189076,
+            "validation_loss": 0.05563128019471809,
+            "validation_ap": 0.16485724075290012,
+            "seconds": 4.149009379092604,
+            "device": "cuda"
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.03017511776914963,
+            "validation_loss": 0.05633630280753986,
+            "validation_ap": 0.16755864173884552,
+            "seconds": 4.1358641078695655,
+            "device": "cuda"
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.029999582483569744,
+            "validation_loss": 0.057664318393319945,
+            "validation_ap": 0.1676136577421342,
+            "seconds": 4.140883737010881,
+            "device": "cuda"
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.029918181311100498,
+            "validation_loss": 0.061673134114329044,
+            "validation_ap": 0.15998645360625635,
+            "seconds": 4.143037723843008,
+            "device": "cuda"
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.029798913727610236,
+            "validation_loss": 0.0597202320944852,
+            "validation_ap": 0.1629889331508354,
+            "seconds": 4.132272779941559,
+            "device": "cuda"
+          },
+          {
+            "epoch": 13,
+            "train_loss": 0.029734552917755935,
+            "validation_loss": 0.05777433263735124,
+            "validation_ap": 0.16173856299329414,
+            "seconds": 4.112022147048265,
+            "device": "cuda"
+          },
+          {
+            "epoch": 14,
+            "train_loss": 0.02966714918903926,
+            "validation_loss": 0.05642946734341166,
+            "validation_ap": 0.16253909720304072,
+            "seconds": 4.110373910050839,
+            "device": "cuda"
+          },
+          {
+            "epoch": 15,
+            "train_loss": 0.02950498485503192,
+            "validation_loss": 0.06064478275919576,
+            "validation_ap": 0.15788375936861423,
+            "seconds": 4.137820211937651,
+            "device": "cuda"
+          }
+        ]
+      },
+      "trainable_parameters": 15745,
+      "files_sha256": {
+        "metrics.json": "7e4a9d80075603a79a0de181e6e17ce2b5aa17e7436f8208d7c6dcbab5c76913",
+        "best.pt": "5045a44c185cceaf1b1f02d69fec97e4957afb31dbbbe28fc43aed7fad42ae04",
+        "last.pt": "1380397e13f2a0d9a5891c861ca3846ce042aa922473c6a4c0dd84b93184d70c"
+      }
+    },
+    {
+      "model": "e3",
+      "learning_rate": 0.001,
+      "seed": 42,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e3/school-e3-seed42",
+      "signature": {
+        "experiment": "E3",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "width": 75,
+          "num_blocks": 1
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 42,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "pos_weight": 96.53269537480064,
+        "architecture": "residual_mlp"
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E3",
+          "model": {
+            "input_dim": 57,
+            "dropout": 0.1,
+            "width": 75,
+            "num_blocks": 1
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 42,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "pos_weight": 96.53269537480064,
+          "architecture": "residual_mlp"
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 8,
+        "best_validation_ap": 0.1691891802546626,
+        "total_epoch_seconds": 69.63992221863009,
+        "trainable_parameters": 15826,
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.8871415178977132,
+            "validation_loss": 0.5121422774665992,
+            "validation_ap": 0.15567425392534434,
+            "seconds": 7.659379652002826,
+            "device": "cuda"
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.8479038445640227,
+            "validation_loss": 0.5205817185521399,
+            "validation_ap": 0.16664622002146645,
+            "seconds": 5.051196528831497,
+            "device": "cuda"
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.8364855477918902,
+            "validation_loss": 0.36293954526908156,
+            "validation_ap": 0.16510320275330037,
+            "seconds": 5.353077088017017,
+            "device": "cuda"
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.8292028969367501,
+            "validation_loss": 0.49116420252340254,
+            "validation_ap": 0.15669805346118318,
+            "seconds": 6.753508079098538,
+            "device": "cuda"
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.8217168725882374,
+            "validation_loss": 0.4860354065255877,
+            "validation_ap": 0.16422993907884112,
+            "seconds": 6.480409482028335,
+            "device": "cuda"
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.812989874671695,
+            "validation_loss": 0.4419740176013073,
+            "validation_ap": 0.1640376241084614,
+            "seconds": 7.666641905903816,
+            "device": "cuda"
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.8081912784166021,
+            "validation_loss": 0.47314218322771046,
+            "validation_ap": 0.16789381335398842,
+            "seconds": 4.629450876964256,
+            "device": "cuda"
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.8024880635521978,
+            "validation_loss": 0.3653059249318005,
+            "validation_ap": 0.1691891802546626,
+            "seconds": 4.3381984329316765,
+            "device": "cuda"
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.7962780188825526,
+            "validation_loss": 0.4907855113779385,
+            "validation_ap": 0.16606836475303297,
+            "seconds": 4.337603155057877,
+            "device": "cuda"
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.7896336243498732,
+            "validation_loss": 0.37977576602070423,
+            "validation_ap": 0.16894888631016644,
+            "seconds": 4.348588722990826,
+            "device": "cuda"
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.7849017436759289,
+            "validation_loss": 0.44106320737381766,
+            "validation_ap": 0.16579389520441848,
+            "seconds": 4.355704938992858,
+            "device": "cuda"
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.7791825342546459,
+            "validation_loss": 0.4256721097207547,
+            "validation_ap": 0.16741833090050504,
+            "seconds": 4.340826163999736,
+            "device": "cuda"
+          },
+          {
+            "epoch": 13,
+            "train_loss": 0.7716049186432328,
+            "validation_loss": 0.43182065440664874,
+            "validation_ap": 0.16857009883081797,
+            "seconds": 4.325337191810831,
+            "device": "cuda"
+          }
+        ]
+      },
+      "trainable_parameters": 15826,
+      "files_sha256": {
+        "metrics.json": "510263989ac7551cf0aea41225f091943a6604d112f892fc5268cf60ba0507e1",
+        "best.pt": "b792b3f4377ea651664696d9069cf20ea4b23a7106d482550652928f144a1648",
+        "last.pt": "a146a4c4641d9a8ddc56e9729e7c1856e10b9d89afa963e90875455626a460c2"
+      }
+    },
+    {
+      "model": "e3",
+      "learning_rate": 0.001,
+      "seed": 43,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e3/school-e3-seed43",
+      "signature": {
+        "experiment": "E3",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "width": 75,
+          "num_blocks": 1
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 43,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "pos_weight": 96.53269537480064,
+        "architecture": "residual_mlp"
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E3",
+          "model": {
+            "input_dim": 57,
+            "dropout": 0.1,
+            "width": 75,
+            "num_blocks": 1
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 43,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "pos_weight": 96.53269537480064,
+          "architecture": "residual_mlp"
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 7,
+        "best_validation_ap": 0.17187791256762153,
+        "total_epoch_seconds": 63.93978155544028,
+        "trainable_parameters": 15826,
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.8862982771908716,
+            "validation_loss": 0.503765446189222,
+            "validation_ap": 0.1610062866046739,
+            "seconds": 6.525098174111918,
+            "device": "cuda"
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.8499194031366012,
+            "validation_loss": 0.37632955451943045,
+            "validation_ap": 0.16039307534612038,
+            "seconds": 6.240529649890959,
+            "device": "cuda"
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.8359042793479468,
+            "validation_loss": 0.4773900985373926,
+            "validation_ap": 0.1599215124830035,
+            "seconds": 6.330189740052447,
+            "device": "cuda"
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.8251077817695889,
+            "validation_loss": 0.4765661272937558,
+            "validation_ap": 0.16337489725331375,
+            "seconds": 7.819831985980272,
+            "device": "cuda"
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.8187275680352903,
+            "validation_loss": 0.4075892209790707,
+            "validation_ap": 0.1656504168330066,
+            "seconds": 6.308994024991989,
+            "device": "cuda"
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.8107582052497269,
+            "validation_loss": 0.4749162284860279,
+            "validation_ap": 0.16855417315653734,
+            "seconds": 4.419743618927896,
+            "device": "cuda"
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.8024000361533266,
+            "validation_loss": 0.37837949145229055,
+            "validation_ap": 0.17187791256762153,
+            "seconds": 4.3918724888935685,
+            "device": "cuda"
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.7988751565874486,
+            "validation_loss": 0.4577990576418782,
+            "validation_ap": 0.16531910425488838,
+            "seconds": 4.374657316831872,
+            "device": "cuda"
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.7896902492733299,
+            "validation_loss": 0.3760931806604535,
+            "validation_ap": 0.1683072325998922,
+            "seconds": 4.368297351989895,
+            "device": "cuda"
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.7854333173569724,
+            "validation_loss": 0.3908592615882441,
+            "validation_ap": 0.16513136266726194,
+            "seconds": 4.380020476877689,
+            "device": "cuda"
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.7783745246747247,
+            "validation_loss": 0.41437362938420624,
+            "validation_ap": 0.16736880682368918,
+            "seconds": 4.3826291910372674,
+            "device": "cuda"
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.7742227864348005,
+            "validation_loss": 0.43095975597620134,
+            "validation_ap": 0.16553149950900478,
+            "seconds": 4.3979175358545035,
+            "device": "cuda"
+          }
+        ]
+      },
+      "trainable_parameters": 15826,
+      "files_sha256": {
+        "metrics.json": "66ef63fae4bceb52a00dd658fc3470d36097c152b010f48e8b7064fda44c4267",
+        "best.pt": "0d4fc445137187c0aefe6301d4a59852ec9d786ff24d412faa12143b6b0454f6",
+        "last.pt": "d493e437d9ca46c932235cea211cf341604abac2caa9844d8db1af5159a4a1e1"
+      }
+    },
+    {
+      "model": "e3",
+      "learning_rate": 0.001,
+      "seed": 44,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e3/school-e3-seed44",
+      "signature": {
+        "experiment": "E3",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "width": 75,
+          "num_blocks": 1
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 44,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "pos_weight": 96.53269537480064,
+        "architecture": "residual_mlp"
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E3",
+          "model": {
+            "input_dim": 57,
+            "dropout": 0.1,
+            "width": 75,
+            "num_blocks": 1
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 44,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "pos_weight": 96.53269537480064,
+          "architecture": "residual_mlp"
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 6,
+        "best_validation_ap": 0.1686094640894578,
+        "total_epoch_seconds": 50.02064417209476,
+        "trainable_parameters": 15826,
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.890148072672292,
+            "validation_loss": 0.36131139011542107,
+            "validation_ap": 0.15802534259322423,
+            "seconds": 5.238728641998023,
+            "device": "cuda"
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.8469105822961653,
+            "validation_loss": 0.49580915851596896,
+            "validation_ap": 0.15469307543064856,
+            "seconds": 4.391345290932804,
+            "device": "cuda"
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.8369003476913576,
+            "validation_loss": 0.4891089547223553,
+            "validation_ap": 0.15915187058941677,
+            "seconds": 4.393538821022958,
+            "device": "cuda"
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.8279178268068479,
+            "validation_loss": 0.43731080344218615,
+            "validation_ap": 0.1608567313589229,
+            "seconds": 4.383626515977085,
+            "device": "cuda"
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.8197868188100689,
+            "validation_loss": 0.4681297690238343,
+            "validation_ap": 0.16527139658904705,
+            "seconds": 4.38104755198583,
+            "device": "cuda"
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.8136938677627749,
+            "validation_loss": 0.3864181175024567,
+            "validation_ap": 0.1686094640894578,
+            "seconds": 4.379790263948962,
+            "device": "cuda"
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.8072317972215065,
+            "validation_loss": 0.4668392093697734,
+            "validation_ap": 0.16353405139991808,
+            "seconds": 4.383619491010904,
+            "device": "cuda"
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.8033143247220771,
+            "validation_loss": 0.36285591766234904,
+            "validation_ap": 0.1668136993520057,
+            "seconds": 4.365298232063651,
+            "device": "cuda"
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.7953083666884524,
+            "validation_loss": 0.4168682555441373,
+            "validation_ap": 0.16505443996888666,
+            "seconds": 4.3668729229830205,
+            "device": "cuda"
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.7907588305879127,
+            "validation_loss": 0.4100804987849326,
+            "validation_ap": 0.1677717606580508,
+            "seconds": 4.35460027307272,
+            "device": "cuda"
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.7894906498230315,
+            "validation_loss": 0.4216625408372991,
+            "validation_ap": 0.16818546071294338,
+            "seconds": 5.382176167098805,
+            "device": "cuda"
+          }
+        ]
+      },
+      "trainable_parameters": 15826,
+      "files_sha256": {
+        "metrics.json": "a5a046a9abc43aa180b96e32ed1f97c89a33aa6f90a77d3efda7638109b1c7ae",
+        "best.pt": "1dea128cc83d69ae78bf3e19a2edb8147dda209f3c611bd87828d666fc33bab5",
+        "last.pt": "3fd174c98086e8df69c30eca3df5aadea1260f54970cee9c5115cc04b0262084"
+      }
+    },
+    {
+      "model": "e4",
+      "learning_rate": 0.001,
+      "seed": 42,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e4/school-e4-ratio0.1-lr0.001-seed42",
+      "signature": {
+        "experiment": "E4",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "hidden_dims": [
+            128,
+            64
+          ]
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 42,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "oversampling_ratio": 0.1
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E4",
+          "model": {
+            "input_dim": 57,
+            "dropout": 0.1,
+            "hidden_dims": [
+              128,
+              64
+            ]
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 42,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "oversampling_ratio": 0.1
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 3,
+        "best_validation_ap": 0.16615141330297475,
+        "total_epoch_seconds": 33.85230263415724,
+        "trainable_parameters": 15745,
+        "training_work": {
+          "original_train_rows": 794989,
+          "rows_per_epoch": 865522,
+          "fraud_presentations_per_epoch": 78684,
+          "normal_presentations_per_epoch": 786838,
+          "actual_fraud_to_normal_ratio": 0.10000025418192818,
+          "optimizer_steps_per_epoch": 3381,
+          "total_training_rows": 6924176,
+          "total_optimizer_steps": 27048
+        },
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.20630333941781592,
+            "validation_loss": 0.11765315238033452,
+            "validation_ap": 0.16237333167834384,
+            "seconds": 5.733593879267573,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.19386737852321295,
+            "validation_loss": 0.1148715871146873,
+            "validation_ap": 0.16484359786209815,
+            "seconds": 4.638824465684593,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.1880437386746102,
+            "validation_loss": 0.0911029256567845,
+            "validation_ap": 0.16615141330297475,
+            "seconds": 3.911267555318773,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.18283894511907792,
+            "validation_loss": 0.09506153329302067,
+            "validation_ap": 0.15537173488272923,
+            "seconds": 3.9149964470416307,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.17815399630928497,
+            "validation_loss": 0.09673358143592638,
+            "validation_ap": 0.1525250562906847,
+            "seconds": 3.911071333102882,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.17425827991586124,
+            "validation_loss": 0.10467150884581057,
+            "validation_ap": 0.1385569968250159,
+            "seconds": 3.9214400509372354,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.17096764331107203,
+            "validation_loss": 0.09490485279312871,
+            "validation_ap": 0.14558782684538057,
+            "seconds": 3.9096816796809435,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.1682202415769168,
+            "validation_loss": 0.10077483924328245,
+            "validation_ap": 0.1349287677463929,
+            "seconds": 3.91142722312361,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          }
+        ]
+      },
+      "trainable_parameters": 15745,
+      "files_sha256": {
+        "metrics.json": "8ddeb4ef4feeec2771864eaa5a5febc05448c4171caaf305d1966966251c6fad",
+        "best.pt": "ec8e98b77a12d60848a8d1f4a71db9dc3bf5fd62f21e0e14335543cde6fd470b",
+        "last.pt": "d0bc1e00cf217e07a57300d6c88ca8239746063f4f66827c47c3a659cfe4c7d4"
+      }
+    },
+    {
+      "model": "e4",
+      "learning_rate": 0.001,
+      "seed": 43,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e4/school-e4-ratio0.1-lr0.001-seed43",
+      "signature": {
+        "experiment": "E4",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "hidden_dims": [
+            128,
+            64
+          ]
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 43,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "oversampling_ratio": 0.1
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E4",
+          "model": {
+            "input_dim": 57,
+            "dropout": 0.1,
+            "hidden_dims": [
+              128,
+              64
+            ]
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 43,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "oversampling_ratio": 0.1
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 3,
+        "best_validation_ap": 0.16542333117667696,
+        "total_epoch_seconds": 37.89441029308364,
+        "trainable_parameters": 15745,
+        "training_work": {
+          "original_train_rows": 794989,
+          "rows_per_epoch": 865522,
+          "fraud_presentations_per_epoch": 78684,
+          "normal_presentations_per_epoch": 786838,
+          "actual_fraud_to_normal_ratio": 0.10000025418192818,
+          "optimizer_steps_per_epoch": 3381,
+          "total_training_rows": 6924176,
+          "total_optimizer_steps": 27048
+        },
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.20685795484603073,
+            "validation_loss": 0.10827010971425897,
+            "validation_ap": 0.16018971430529855,
+            "seconds": 5.7456055991351604,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.19497584141552507,
+            "validation_loss": 0.09803073789278842,
+            "validation_ap": 0.16329160263691223,
+            "seconds": 5.38586940523237,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.18882969499121494,
+            "validation_loss": 0.09302256804899954,
+            "validation_ap": 0.16542333117667696,
+            "seconds": 5.423688340000808,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.18379401325298575,
+            "validation_loss": 0.08849941871999134,
+            "validation_ap": 0.15814170293465027,
+            "seconds": 5.418266154825687,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.17921608851483423,
+            "validation_loss": 0.11346785812990332,
+            "validation_ap": 0.14553320032107706,
+            "seconds": 4.2201012298464775,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.1752513893189261,
+            "validation_loss": 0.08691163875025393,
+            "validation_ap": 0.14886066711612783,
+            "seconds": 3.8922672369517386,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.1715400564278883,
+            "validation_loss": 0.095110010436438,
+            "validation_ap": 0.14251851869728913,
+            "seconds": 3.9102782709524035,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.16818410465876152,
+            "validation_loss": 0.09035112942612283,
+            "validation_ap": 0.14554079236742515,
+            "seconds": 3.8983340561389923,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          }
+        ]
+      },
+      "trainable_parameters": 15745,
+      "files_sha256": {
+        "metrics.json": "5e43707c9c9c295f89056d4d9e0d961b36b337a0422765f5887c386c2757756f",
+        "best.pt": "8b1dc87a45950635939660bdd56b180beb2709003e23a22260ea412fb730d58e",
+        "last.pt": "5d915f7dfc0fe1953658d4c2ed48269536a3abd55d924e380ca02e948d438d7f"
+      }
+    },
+    {
+      "model": "e4",
+      "learning_rate": 0.001,
+      "seed": 44,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e4/school-e4-ratio0.1-lr0.001-seed44",
+      "signature": {
+        "experiment": "E4",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "hidden_dims": [
+            128,
+            64
+          ]
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 44,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "oversampling_ratio": 0.1
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E4",
+          "model": {
+            "input_dim": 57,
+            "dropout": 0.1,
+            "hidden_dims": [
+              128,
+              64
+            ]
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 44,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "oversampling_ratio": 0.1
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 2,
+        "best_validation_ap": 0.16484975131007182,
+        "total_epoch_seconds": 34.585333235096186,
+        "trainable_parameters": 15745,
+        "training_work": {
+          "original_train_rows": 794989,
+          "rows_per_epoch": 865522,
+          "fraud_presentations_per_epoch": 78684,
+          "normal_presentations_per_epoch": 786838,
+          "actual_fraud_to_normal_ratio": 0.10000025418192818,
+          "optimizer_steps_per_epoch": 3381,
+          "total_training_rows": 6058654,
+          "total_optimizer_steps": 23667
+        },
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.20628656030830902,
+            "validation_loss": 0.09031673299672027,
+            "validation_ap": 0.1636475702087991,
+            "seconds": 5.737493725027889,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.19379183202776384,
+            "validation_loss": 0.09185517229242848,
+            "validation_ap": 0.16484975131007182,
+            "seconds": 5.479020134080201,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.1878847580877685,
+            "validation_loss": 0.084872450677612,
+            "validation_ap": 0.15619918283359627,
+            "seconds": 5.447173535823822,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.18282646398144276,
+            "validation_loss": 0.09991312272519934,
+            "validation_ap": 0.14973323257954496,
+            "seconds": 5.452469035983086,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.17783031455407733,
+            "validation_loss": 0.08673144616646736,
+            "validation_ap": 0.1580043286450592,
+            "seconds": 4.585425271186978,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.17422422339498733,
+            "validation_loss": 0.09670300689483129,
+            "validation_ap": 0.1499156062941925,
+            "seconds": 3.945124066900462,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.17077597425254157,
+            "validation_loss": 0.093732690571015,
+            "validation_ap": 0.1513057822595162,
+            "seconds": 3.938627466093749,
+            "device": "cuda",
+            "training_rows": 865522,
+            "fraud_presentations": 78684,
+            "optimizer_steps": 3381
+          }
+        ]
+      },
+      "trainable_parameters": 15745,
+      "files_sha256": {
+        "metrics.json": "04987349a9009c4880cf8396f12f868aed4b6cda145cc84c6341b215b265c425",
+        "best.pt": "a85d1229168d0cfaf7b577e131cb99707b460f41ec0b810eec05ab6cc45fd770",
+        "last.pt": "8af3435ec2eb603ce0ac69eec95d69066deb5fd1da7e9f8c97bee5052aae8b9e"
+      }
+    },
+    {
+      "model": "e5",
+      "learning_rate": 0.001,
+      "seed": 42,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e5/school-e5-lr0.001-seed42",
+      "signature": {
+        "experiment": "E5",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "d_token": 32,
+          "n_heads": 4,
+          "num_blocks": 2,
+          "ffn_hidden": 48,
+          "residual_dropout": 0.0
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 42,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "pos_weight": 96.53269537480064,
+        "architecture": "ft_transformer"
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E5",
+          "model": {
+            "input_dim": 57,
+            "dropout": 0.1,
+            "d_token": 32,
+            "n_heads": 4,
+            "num_blocks": 2,
+            "ffn_hidden": 48,
+            "residual_dropout": 0.0
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 42,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "pos_weight": 96.53269537480064,
+          "architecture": "ft_transformer"
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 13,
+        "best_validation_ap": 0.181494760752893,
+        "total_epoch_seconds": 510.55072512757033,
+        "trainable_parameters": 21889,
+        "training_work": {
+          "original_train_rows": 794989,
+          "rows_per_epoch": 794989,
+          "fraud_presentations_per_epoch": 8151,
+          "normal_presentations_per_epoch": 786838,
+          "actual_fraud_to_normal_ratio": 0.010359184482701648,
+          "optimizer_steps_per_epoch": 3106,
+          "total_training_rows": 14309802,
+          "total_optimizer_steps": 55908
+        },
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.9124007733039418,
+            "validation_loss": 0.5922723778975838,
+            "validation_ap": 0.16002449922148063,
+            "seconds": 27.743739335332066,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.8535157359259287,
+            "validation_loss": 0.6231272857478892,
+            "validation_ap": 0.17008036189337955,
+            "seconds": 29.205277561210096,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.8444611542720147,
+            "validation_loss": 0.2964521783641894,
+            "validation_ap": 0.17281269470635324,
+            "seconds": 27.80944734206423,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.8406107311427137,
+            "validation_loss": 0.4885630914709305,
+            "validation_ap": 0.17858696759866963,
+            "seconds": 29.349613493774086,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.8366090237426523,
+            "validation_loss": 0.5260656122475031,
+            "validation_ap": 0.17550082320864735,
+            "seconds": 29.40625510364771,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.8346119859624368,
+            "validation_loss": 0.4878773387191158,
+            "validation_ap": 0.17663519103540887,
+            "seconds": 29.0083509250544,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.8320431201885808,
+            "validation_loss": 0.40851199529058313,
+            "validation_ap": 0.17687938289837707,
+            "seconds": 29.238343480974436,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.8299043996790745,
+            "validation_loss": 0.4734612372326045,
+            "validation_ap": 0.17981203474450055,
+            "seconds": 29.089387434069067,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.8277386814824559,
+            "validation_loss": 0.3959628311864424,
+            "validation_ap": 0.17855457324301802,
+            "seconds": 28.93687156587839,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.8255328423029532,
+            "validation_loss": 0.3552816909394244,
+            "validation_ap": 0.17794832124943366,
+            "seconds": 28.909114512149245,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.8232719475961862,
+            "validation_loss": 0.374284986754545,
+            "validation_ap": 0.1749207053147193,
+            "seconds": 21.12998603610322,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.8229226959414101,
+            "validation_loss": 0.4110109286167752,
+            "validation_ap": 0.17880964886425185,
+            "seconds": 29.00647530099377,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 13,
+            "train_loss": 0.820702540597357,
+            "validation_loss": 0.4471576891811401,
+            "validation_ap": 0.181494760752893,
+            "seconds": 28.12924642395228,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 14,
+            "train_loss": 0.8193953416375991,
+            "validation_loss": 0.44595753323105203,
+            "validation_ap": 0.15960210691900945,
+            "seconds": 28.251059771049768,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 15,
+            "train_loss": 0.8177378616421551,
+            "validation_loss": 0.3743053424570848,
+            "validation_ap": 0.17867025006898962,
+            "seconds": 29.03069677017629,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 16,
+            "train_loss": 0.8170284526181749,
+            "validation_loss": 0.39555250991775864,
+            "validation_ap": 0.17409490010902598,
+            "seconds": 28.96642974484712,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 17,
+            "train_loss": 0.8158152785956931,
+            "validation_loss": 0.47143473764529514,
+            "validation_ap": 0.18011018652978938,
+            "seconds": 28.467542084865272,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 18,
+            "train_loss": 0.8155305613782204,
+            "validation_loss": 0.4060384840374911,
+            "validation_ap": 0.17840905188335157,
+            "seconds": 28.872888241428882,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          }
+        ]
+      },
+      "trainable_parameters": 21889,
+      "files_sha256": {
+        "metrics.json": "117f335b2a22bc51787d935278df784680f80e4d5a3aab8d9ecf3dc9192b69db",
+        "best.pt": "73b6824dc18e10bb383c05409267198641e5f3f41383ad627800f13d44625479",
+        "last.pt": "c705a461334e9ea99f831a705fb3009f4eee0ecc10580ff53b062cfc21a06fbb"
+      }
+    },
+    {
+      "model": "e5",
+      "learning_rate": 0.001,
+      "seed": 43,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e5/school-e5-lr0.001-seed43",
+      "signature": {
+        "experiment": "E5",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "d_token": 32,
+          "n_heads": 4,
+          "num_blocks": 2,
+          "ffn_hidden": 48,
+          "residual_dropout": 0.0
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 43,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "pos_weight": 96.53269537480064,
+        "architecture": "ft_transformer"
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E5",
+          "model": {
+            "input_dim": 57,
+            "dropout": 0.1,
+            "d_token": 32,
+            "n_heads": 4,
+            "num_blocks": 2,
+            "ffn_hidden": 48,
+            "residual_dropout": 0.0
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 43,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "pos_weight": 96.53269537480064,
+          "architecture": "ft_transformer"
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 8,
+        "best_validation_ap": 0.17867251979665688,
+        "total_epoch_seconds": 361.04453823622316,
+        "trainable_parameters": 21889,
+        "training_work": {
+          "original_train_rows": 794989,
+          "rows_per_epoch": 794989,
+          "fraud_presentations_per_epoch": 8151,
+          "normal_presentations_per_epoch": 786838,
+          "actual_fraud_to_normal_ratio": 0.010359184482701648,
+          "optimizer_steps_per_epoch": 3106,
+          "total_training_rows": 10334857,
+          "total_optimizer_steps": 40378
+        },
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.9122734418224561,
+            "validation_loss": 0.6083706557711027,
+            "validation_ap": 0.16735302943938013,
+            "seconds": 28.276913505978882,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.8560680696652048,
+            "validation_loss": 0.33855540672973294,
+            "validation_ap": 0.15994730360875808,
+            "seconds": 25.37585247727111,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.8463206939422082,
+            "validation_loss": 0.46309999463103435,
+            "validation_ap": 0.17763867634164474,
+            "seconds": 28.70395520236343,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.8402784681039752,
+            "validation_loss": 0.46922573615183766,
+            "validation_ap": 0.17371945236724323,
+            "seconds": 27.562799396924675,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.8365499397524778,
+            "validation_loss": 0.4854381025437023,
+            "validation_ap": 0.1722994978428667,
+            "seconds": 29.29752840893343,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.8327744998938486,
+            "validation_loss": 0.43395848878741344,
+            "validation_ap": 0.1784086764939805,
+            "seconds": 28.82073767390102,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.8320080663416723,
+            "validation_loss": 0.4523763927418173,
+            "validation_ap": 0.1745811696792128,
+            "seconds": 27.77060052519664,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.8297957912960511,
+            "validation_loss": 0.3966961790913,
+            "validation_ap": 0.17867251979665688,
+            "seconds": 29.196528853848577,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.8255915933927569,
+            "validation_loss": 0.3564855945144706,
+            "validation_ap": 0.17809847814371094,
+            "seconds": 28.7143068080768,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.8240817059455132,
+            "validation_loss": 0.3453624442293573,
+            "validation_ap": 0.1740128509983942,
+            "seconds": 28.599808963015676,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.8232644821591322,
+            "validation_loss": 0.38821744680995374,
+            "validation_ap": 0.17859746697728565,
+            "seconds": 30.009207014925778,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.8201537944899413,
+            "validation_loss": 0.4293355163905617,
+            "validation_ap": 0.17862721639601317,
+            "seconds": 29.076501653064042,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 13,
+            "train_loss": 0.8202114450321909,
+            "validation_loss": 0.40547308423411393,
+            "validation_ap": 0.14281663159883387,
+            "seconds": 19.639797752723098,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          }
+        ]
+      },
+      "trainable_parameters": 21889,
+      "files_sha256": {
+        "metrics.json": "02bacf08f31126fbd8896972daed6fb776bfaeded74f985daee3bb169cf8d9b8",
+        "best.pt": "e00c2979d6386463f6e77ae38e8992ba80407322b2ed3555e73c50d2804da338",
+        "last.pt": "b5b15a45ec96fd3e4140f5b3c5bce55b47af5528516ea7c2a1f94d1eeddd7c51"
+      }
+    },
+    {
+      "model": "e5",
+      "learning_rate": 0.001,
+      "seed": 44,
+      "run_dir": "/Users/hwangjeonghyun/Desktop/github/bank-account-fraud-detection/checkpoints/e5/school-e5-lr0.001-seed44",
+      "signature": {
+        "experiment": "E5",
+        "model": {
+          "input_dim": 57,
+          "dropout": 0.1,
+          "d_token": 32,
+          "n_heads": 4,
+          "num_blocks": 2,
+          "ffn_hidden": 48,
+          "residual_dropout": 0.0
+        },
+        "loss": "BCEWithLogitsLoss",
+        "optimizer": "AdamW",
+        "seed": 44,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "patience": 5,
+        "mixed_precision": "off",
+        "mode": "full",
+        "rows": {
+          "train": 794989,
+          "validation": 108168
+        },
+        "data": {
+          "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+          "files_sha256": {
+            "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+            "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+            "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+            "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+            "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+          }
+        },
+        "pos_weight": 96.53269537480064,
+        "architecture": "ft_transformer"
+      },
+      "metrics": {
+        "mode": "full",
+        "device": "cuda",
+        "torch_version": "2.10.0+cu130",
+        "signature": {
+          "experiment": "E5",
+          "model": {
+            "input_dim": 57,
+            "dropout": 0.1,
+            "d_token": 32,
+            "n_heads": 4,
+            "num_blocks": 2,
+            "ffn_hidden": 48,
+            "residual_dropout": 0.0
+          },
+          "loss": "BCEWithLogitsLoss",
+          "optimizer": "AdamW",
+          "seed": 44,
+          "batch_size": 256,
+          "learning_rate": 0.001,
+          "weight_decay": 0.0001,
+          "patience": 5,
+          "mixed_precision": "off",
+          "mode": "full",
+          "rows": {
+            "train": 794989,
+            "validation": 108168
+          },
+          "data": {
+            "source_sha256": "7bf10a37ce07e72e14c1b09e5efee3d27261baff4facc7da767b0474dcf9b809",
+            "files_sha256": {
+              "feature_mapping.json": "c3517f8e77862298348c7579fe97cb23ffda53ed0bd8a5e5922dd2b38588cc33",
+              "train_X.npy": "4fd7614f88195a426ac31ef2e7d4aea690447a1614c47328700d2f974917fbef",
+              "train_y.npy": "aeb29ea7c9900a3b9410faddd94b03bdeef9b70fa83e8ce46e224abffd9ade54",
+              "validation_X.npy": "b897773c316673e39342a50acbf246d6492c0563789196a710c4f3a60cda7bff",
+              "validation_y.npy": "1b38a37ab6fb5bb1af8eea0f05f4b45d051f12066c73826b4a6b363fd69fbbd4"
+            }
+          },
+          "pos_weight": 96.53269537480064,
+          "architecture": "ft_transformer"
+        },
+        "requested_epochs": 20,
+        "stop_reason": "early_stopping",
+        "resumed_from": null,
+        "best_epoch": 10,
+        "best_validation_ap": 0.17909487394469675,
+        "total_epoch_seconds": 414.7852692976594,
+        "trainable_parameters": 21889,
+        "training_work": {
+          "original_train_rows": 794989,
+          "rows_per_epoch": 794989,
+          "fraud_presentations_per_epoch": 8151,
+          "normal_presentations_per_epoch": 786838,
+          "actual_fraud_to_normal_ratio": 0.010359184482701648,
+          "optimizer_steps_per_epoch": 3106,
+          "total_training_rows": 11924835,
+          "total_optimizer_steps": 46590
+        },
+        "splits": {
+          "train": {
+            "rows": 794989,
+            "fraud_count": 8151
+          },
+          "validation": {
+            "rows": 108168,
+            "fraud_count": 1450
+          }
+        },
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 0.9126155318493686,
+            "validation_loss": 0.38427190154748997,
+            "validation_ap": 0.16262192199434886,
+            "seconds": 29.136584477033466,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.8559277322817819,
+            "validation_loss": 0.5689355693936621,
+            "validation_ap": 0.16483514116289835,
+            "seconds": 28.561339394189417,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.8484925274095051,
+            "validation_loss": 0.5266627890454816,
+            "validation_ap": 0.1742291883666781,
+            "seconds": 28.914138511754572,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.8450222099077435,
+            "validation_loss": 0.511030076514792,
+            "validation_ap": 0.1691142024608393,
+            "seconds": 28.713825192302465,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.8387701988455113,
+            "validation_loss": 0.3655374808875196,
+            "validation_ap": 0.17057816068482076,
+            "seconds": 28.76249658409506,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.8355587116188103,
+            "validation_loss": 0.4212606358383545,
+            "validation_ap": 0.17234520084903632,
+            "seconds": 28.51788823492825,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.8342794123120991,
+            "validation_loss": 0.3840949643880215,
+            "validation_ap": 0.17463756495971525,
+            "seconds": 29.31172627210617,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.8323695790420473,
+            "validation_loss": 0.37481563172258575,
+            "validation_ap": 0.1768380562927062,
+            "seconds": 28.530681679025292,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.830009120230983,
+            "validation_loss": 0.3167291437875994,
+            "validation_ap": 0.16533371398698612,
+            "seconds": 28.623668631073087,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.8292859677921213,
+            "validation_loss": 0.37124028125023334,
+            "validation_ap": 0.17909487394469675,
+            "seconds": 28.398278910201043,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.8246586739304446,
+            "validation_loss": 0.437952585925577,
+            "validation_ap": 0.17807007079813697,
+            "seconds": 26.78432524809614,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.8246411230290595,
+            "validation_loss": 0.4211370454905927,
+            "validation_ap": 0.17612603155943807,
+            "seconds": 28.503581803292036,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 13,
+            "train_loss": 0.82368519385105,
+            "validation_loss": 0.37631194856549305,
+            "validation_ap": 0.17619150729130822,
+            "seconds": 28.198778234887868,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 14,
+            "train_loss": 0.8229911680537588,
+            "validation_loss": 0.39727730937420586,
+            "validation_ap": 0.17892795159632546,
+            "seconds": 15.031273973640054,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          },
+          {
+            "epoch": 15,
+            "train_loss": 0.8223374453033585,
+            "validation_loss": 0.4430958637250668,
+            "validation_ap": 0.17848219979493848,
+            "seconds": 28.796682151034474,
+            "device": "cuda",
+            "training_rows": 794989,
+            "fraud_presentations": 8151,
+            "optimizer_steps": 3106
+          }
+        ]
+      },
+      "trainable_parameters": 21889,
+      "files_sha256": {
+        "metrics.json": "54b4038f8b1f7971ad86554c199285d72fdfd8d0e3b05c79e774a0d0355c9db0",
+        "best.pt": "a763327f3fc4dabf692cb9df21787cbd234ffe57055b9bcdd50d0e8d2726b6cb",
+        "last.pt": "ecd62f3584edf3e0b79143bc547ca74b5ed3281617c7ca43ebb25d6dd4241fe4"
+      }
+    }
+  ],
+  "school_environment": {
+    "checked_at_utc": "2026-11-26T01:07:21.352298+00:00",
+    "scope": "current_host",
+    "os": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "architecture": "x86_64",
+    "packages": {
+      "numpy": "2.4.1",
+      "pandas": "2.3.3",
+      "scikit-learn": "1.9.1",
+      "matplotlib": "3.11.2",
+      "joblib": "1.6.0",
+      "torch": "2.10.0+cu130",
+      "pytest": null
+    },
+    "disk_free_bytes": 89415663616,
+    "requested_device": "cuda",
+    "training_executed": false,
+    "selected_device": "cuda",
+    "cuda_available": true,
+    "mps_available": false,
+    "pytorch_cuda_version": "13.0",
+    "gpus": [
+      {
+        "index": 0,
+        "name": "NVIDIA RTX A5000",
+        "vram_bytes": 25283526656,
+        "capability": [
+          8,
+          6
+        ]
+      }
+    ],
+    "cuda_bf16_supported": true,
+    "cuda_autocast_available": true,
+    "nvidia_smi": {
+      "returncode": 0,
+      "stdout": "NVIDIA RTX A5000, 24564 MiB, 580.178.04",
+      "stderr": ""
+    }
+  }
+}
