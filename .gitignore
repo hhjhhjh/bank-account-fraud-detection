@@ -22,6 +22,7 @@ checkpoints/**
 /results/phase1/
 /results/environment/
 /results/verification/
+/results/learning-rate-search/
 *.csv
 *.parquet
 *.zip

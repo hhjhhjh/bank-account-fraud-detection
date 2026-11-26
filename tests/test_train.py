@@ -314,6 +314,17 @@ def test_validation_evaluation_uses_saved_model_and_never_opens_test(b0_config, 
         evaluate_validation(config)
 
 
+def test_cli_learning_rate_override_and_dry_run_do_not_train(b0_config, tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(train, "load_config", lambda path: b0_config)
+    b0_config["training"]["checkpoint_dir"] = str(tmp_path / "checkpoints")
+    monkeypatch.setattr("sys.argv", ["baf-train", "--run-name", "preview", "--learning-rate", "0.0003", "--dry-run"])
+    monkeypatch.setattr(train, "train_epoch", lambda *args: pytest.fail("Dry run must not train"))
+    train.main()
+    result = json.loads(capsys.readouterr().out)
+    assert result["signature"]["learning_rate"] == 0.0003
+    assert not (tmp_path / "checkpoints").exists()
+
+
 @pytest.mark.parametrize("model_id", ["e4", "e5"])
 def test_validation_accepts_configured_run_names_without_opening_test(b0_config, tmp_path, monkeypatch, model_id):
     from baf.evaluation import evaluate_validation
