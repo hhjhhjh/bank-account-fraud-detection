@@ -1,0 +1,12 @@
+processed_dir = "data/processed/full"
+checkpoint_dir = "checkpoints"
+output_dir = "results/reference/fixed-lr-comparison"
+device = "cpu"
+batch_size = 256
+models = ["b0", "e1", "e2", "e3", "e4", "e5"]
+seeds = [42, 43, 44]
+fpr_caps = [0.01, 0.05]
+
+[run_names]
+e4 = "school-e4-ratio0.1-lr0.001-seed{seed}"
+e5 = "school-e5-lr0.001-seed{seed}"
